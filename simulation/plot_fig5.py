@@ -81,9 +81,10 @@ def _plot_subfig_a(ax: plt.Axes, fairness: List[dict]) -> None:
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
     ax.set_xlabel("Number of Links")
     ax.set_ylabel("Profit Rate")
-    ax.set_title("(a) Profit rate per tier")
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
 
 
 def _plot_subfig_b(ax: plt.Axes, fairness: List[dict]) -> None:
@@ -100,9 +101,10 @@ def _plot_subfig_b(ax: plt.Axes, fairness: List[dict]) -> None:
         )
     ax.set_xlabel("Number of Links")
     ax.set_ylabel(r"Sufficient Forwarding Times ($\times 10^3$)")
-    ax.set_title("(b) Sufficient forwarding per tier")
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(b)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
 
 
 def _plot_subfig_c(ax: plt.Axes, fairness: List[dict]) -> None:
@@ -156,11 +158,12 @@ def _plot_subfig_c(ax: plt.Axes, fairness: List[dict]) -> None:
     )
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("Sufficient Forwarding Times (log)")
-    ax.set_ylabel("Relay Revenue (log)")
-    ax.set_title("(c) Per-forward unit revenue")
+    ax.set_xlabel("Sufficient Forwarding Times")
+    ax.set_ylabel("Relay Revenue")
     ax.grid(alpha=0.3, which="both")
     ax.legend(fontsize=7, loc="lower right", framealpha=0.9, markerscale=1.6)
+    ax.text(0.5, -0.23, "(c)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
 
 
 def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
@@ -189,10 +192,11 @@ def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
         )
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
     ax.set_xlabel("Number of Pseudonymous Nodes")
-    ax.set_ylabel("Adversary Profit Rate")
-    ax.set_title("(d) Sybil attack by adversary tier")
+    ax.set_ylabel("Profit Rate")
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8, loc="lower left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(d)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
 
 
 def main() -> None:
@@ -203,15 +207,11 @@ def main() -> None:
 
     fairness, sybil = _load(results_dir)
 
-    fig, axes = plt.subplots(1, 4, figsize=(18.0, 3.9))
-    _plot_subfig_a(axes[0], fairness)
-    _plot_subfig_b(axes[1], fairness)
-    _plot_subfig_c(axes[2], fairness)
-    _plot_subfig_d(axes[3], sybil)
-    fig.suptitle(
-        "Fig. 5. ITFC under heterogeneous cloud nodes (Section 8.4).",
-        y=1.02, fontsize=10,
-    )
+    fig, axes = plt.subplots(2, 2, figsize=(9.5, 7.4))
+    _plot_subfig_a(axes[0, 0], fairness)
+    _plot_subfig_b(axes[0, 1], fairness)
+    _plot_subfig_c(axes[1, 0], fairness)
+    _plot_subfig_d(axes[1, 1], sybil)
     fig.tight_layout()
     fig.savefig(fig_path_pdf, bbox_inches="tight")
     fig.savefig(fig_path_png, bbox_inches="tight", dpi=160)
