@@ -25,14 +25,14 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-TIERS = ("Micro", "Small", "Medium", "Large")
+TIERS = ("0.40", "0.30", "0.20", "0.10")
 TIER_COLORS = {
-    "Micro": "#888888",
-    "Small": "#1f77b4",
-    "Medium": "#ff7f0e",
-    "Large": "#d62728",
+    "0.40": "#888888",
+    "0.30": "#1f77b4",
+    "0.20": "#ff7f0e",
+    "0.10": "#d62728",
 }
-TIER_MARKERS = {"Micro": "o", "Small": "s", "Medium": "^", "Large": "D"}
+TIER_MARKERS = {"0.40": "o", "0.30": "s", "0.20": "^", "0.10": "D"}
 
 
 def _bin_by_degree(
@@ -186,7 +186,7 @@ def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
                 sems.append(0.0)
         ax.errorbar(
             xs, np.array(means), yerr=sems,
-            label=f"{tier} adv.",
+            label=tier,
             color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
             markersize=5, linewidth=1.3, capsize=2,
         )

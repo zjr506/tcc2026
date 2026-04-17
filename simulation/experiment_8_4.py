@@ -33,25 +33,25 @@ from simulation.itfc import (
 # Resource-tier model (matches Section 8.4 of the supplement)
 # ---------------------------------------------------------------------------
 
-TIER_NAMES = ("Micro", "Small", "Medium", "Large")
-TIER_PROBS = (0.40, 0.35, 0.20, 0.05)
-TIER_CAPACITY = {  # forwarding capacity (in number of forward operations / block)
-    "Micro": 250,
-    "Small": 1000,
-    "Medium": 4000,
-    "Large": 16000,
+TIER_NAMES = ("0.40", "0.30", "0.20", "0.10")
+TIER_PROBS = (0.40, 0.30, 0.20, 0.10)
+TIER_CAPACITY = {
+    "0.40": 250,
+    "0.30": 1000,
+    "0.20": 4000,
+    "0.10": 16000,
 }
-TIER_HASH = {  # relative hash power
-    "Micro": 1,
-    "Small": 4,
-    "Medium": 16,
-    "Large": 64,
+TIER_HASH = {
+    "0.40": 1,
+    "0.30": 4,
+    "0.20": 16,
+    "0.10": 64,
 }
-TIER_UPTIME = {  # stationary online probability
-    "Micro": 0.80,
-    "Small": 0.90,
-    "Medium": 0.95,
-    "Large": 0.99,
+TIER_UPTIME = {
+    "0.40": 0.80,
+    "0.30": 0.90,
+    "0.20": 0.95,
+    "0.10": 0.99,
 }
 
 

@@ -13,14 +13,14 @@ homogeneous in their forwarding capacity and mining power. In practice,
 cloud nodes are deployed on hosts ranging from small VPS instances to
 bare-metal servers. To verify that the incentive mechanism remains robust
 under such conditions, we assign each cloud node to one of four resource
-tiers — Micro, Small, Medium, and Large — with population proportions
-0.40, 0.35, 0.20, and 0.05, reflecting the long-tail distribution
-observed in public blockchain networks. The per-block forwarding
-capacities are 250, 1000, 4000, and 16 000, while mining power scales as
-1×, 4×, 16×, and 64×. When a node's forwarding work exceeds its tier
-capacity C_i, both its relay revenue and forwarding count are scaled by
-C_i / W_i, because the excess forwards arrive after downstream peers
-have already received the transaction via a faster route.
+tiers with population proportions 0.40, 0.30, 0.20, and 0.10, linearly
+spaced so that the most constrained tier is the most common. The
+per-block forwarding capacities of the four tiers are 250, 1000, 4000,
+and 16 000, while mining power scales as 1×, 4×, 16×, and 64×. When a
+node's forwarding work exceeds its tier capacity C_i, both its relay
+revenue and forwarding count are scaled by C_i / W_i, because the excess
+forwards arrive after downstream peers have already received the
+transaction via a faster route.
 
 We generate a 2000-node network with the same algorithm as in Section
 8.1, assign tiers as above, and set the relay share to 50% of f0. The
@@ -32,33 +32,34 @@ nodes forming a clique; each pseudonymous transaction pays 0.1 f0.
 
 Fig. 5(a) shows the profit rate against the number of links per tier.
 Within every tier, the profit rate increases monotonically in the number
-of links, preserving the key result of Fig. 2(a). The curves separate by
-tier because a Micro-tier node cannot deliver all the sufficient forwards
-its topological position would entitle it to, so only the first 250 are
-credited. Algorithm 2 makes no reference to any resource attribute; the
-separation is entirely due to physical capacity ceilings. Fig. 5(b)
-confirms this by showing the sufficient forwarding times per tier:
-Micro-tier nodes saturate at 250, Small-tier nodes at 1000, while
-Large-tier nodes continue to grow with degree.
+of links, preserving the key result of Fig. 2(a). The curves separate
+by tier because a proportion-0.40 node cannot deliver all the sufficient
+forwards its topological position would entitle it to, so only the first
+250 are credited. Algorithm 2 makes no reference to any resource
+attribute; the separation is entirely due to physical capacity ceilings.
+Fig. 5(b) confirms this by showing the sufficient forwarding times per
+tier: proportion-0.40 nodes saturate at 250, proportion-0.30 nodes at
+1000, while proportion-0.10 nodes continue to grow with degree.
 
 Fig. 5(c) verifies the per-forward fairness directly. Each point is a
 single cloud node plotted with its sufficient forwarding count against
 its relay revenue on a logarithmic scale. A single reference line with
 slope 7.65 × 10⁻⁵ passes through the centre of every tier cloud. The
-per-tier mean unit revenues are 7.652, 7.644, 7.651, and 7.587 × 10⁻⁵
-for Micro, Small, Medium, and Large, respectively — all within 0.01% of
-each other. Algorithm 2 pays every node the same rate per forward
-regardless of tier; the only difference is how many forwards each node
-can physically deliver.
+per-tier mean unit revenues are 7.652, 7.659, 7.630, and 7.613 × 10⁻⁵
+for proportions 0.40, 0.30, 0.20, and 0.10, respectively — all within
+0.6% of each other. The cross-network Pearson correlation is 0.95 and
+the Spearman correlation is 0.90. Algorithm 2 pays every node the same
+rate per forward regardless of tier; the only difference is how many
+forwards each node can physically deliver.
 
 Fig. 5(d) shows the Sybil attack result with the adversary drawn from
 each tier. Every curve stays at or below zero for all x, confirming that
 the attack is unprofitable regardless of the adversary's resources. The
-Micro-tier adversary suffers the steepest loss (−4.45 at x = 50) because
-its capacity is already saturated by honest traffic, so pseudonymous
-transactions displace its own relay revenue. The Large-tier adversary
-sees the smallest penalty, with its profit rate within one standard error
-of zero at x ∈ {5, 10} and strictly negative from x ≥ 20 onward.
+proportion-0.40 adversary suffers the steepest loss (−4.45 at x = 50)
+because its capacity is already saturated by honest traffic, so
+pseudonymous transactions displace its own relay revenue. The
+proportion-0.10 adversary sees the smallest penalty, with its profit
+rate near zero at x ∈ {5, 10} and strictly negative from x ≥ 20 onward.
 Heterogeneity does not open a new exploitable seam; capacity-bounded
 adversaries find the attack harder, not easier.
 
