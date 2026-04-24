@@ -1,0 +1,110 @@
+[
+  {
+    "topology": "BA",
+    "num_nodes": 500,
+    "mean_edges": 1969.3,
+    "alg1_ms": 2.1581,
+    "alg1_se_ms": 0.0039,
+    "alg12_ms": 2.2436,
+    "alg12_se_ms": 0.0296
+  },
+  {
+    "topology": "BA",
+    "num_nodes": 1000,
+    "mean_edges": 3852.3,
+    "alg1_ms": 4.4009,
+    "alg1_se_ms": 0.1298,
+    "alg12_ms": 4.4686,
+    "alg12_se_ms": 0.0895
+  },
+  {
+    "topology": "BA",
+    "num_nodes": 2000,
+    "mean_edges": 7577.3,
+    "alg1_ms": 8.6878,
+    "alg1_se_ms": 0.2393,
+    "alg12_ms": 8.5971,
+    "alg12_se_ms": 0.0197
+  },
+  {
+    "topology": "BA",
+    "num_nodes": 5000,
+    "mean_edges": 18664.3,
+    "alg1_ms": 22.7263,
+    "alg1_se_ms": 0.2937,
+    "alg12_ms": 22.8921,
+    "alg12_se_ms": 0.2133
+  },
+  {
+    "topology": "BA",
+    "num_nodes": 10000,
+    "mean_edges": 37108.7,
+    "alg1_ms": 44.503,
+    "alg1_se_ms": 0.3292,
+    "alg12_ms": 44.8044,
+    "alg12_se_ms": 0.2451
+  },
+  {
+    "topology": "BA",
+    "num_nodes": 20000,
+    "mean_edges": 74151.7,
+    "alg1_ms": 87.6172,
+    "alg1_se_ms": 0.4022,
+    "alg12_ms": 87.6139,
+    "alg12_se_ms": 0.3345
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 500,
+    "mean_edges": 1980.3,
+    "alg1_ms": 2.0876,
+    "alg1_se_ms": 0.0053,
+    "alg12_ms": 2.1468,
+    "alg12_se_ms": 0.004
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 1000,
+    "mean_edges": 3979.3,
+    "alg1_ms": 4.2098,
+    "alg1_se_ms": 0.0071,
+    "alg12_ms": 4.2755,
+    "alg12_se_ms": 0.0071
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 2000,
+    "mean_edges": 7978.0,
+    "alg1_ms": 8.5264,
+    "alg1_se_ms": 0.0036,
+    "alg12_ms": 8.6049,
+    "alg12_se_ms": 0.019
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 5000,
+    "mean_edges": 19976.0,
+    "alg1_ms": 21.3105,
+    "alg1_se_ms": 0.0613,
+    "alg12_ms": 21.5201,
+    "alg12_se_ms": 0.0631
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 10000,
+    "mean_edges": 39974.7,
+    "alg1_ms": 44.3143,
+    "alg1_se_ms": 0.9079,
+    "alg12_ms": 46.6449,
+    "alg12_se_ms": 1.7809
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 20000,
+    "mean_edges": 79973.0,
+    "alg1_ms": 89.6127,
+    "alg1_se_ms": 1.3065,
+    "alg12_ms": 91.8972,
+    "alg12_se_ms": 3.0241
+  }
+]

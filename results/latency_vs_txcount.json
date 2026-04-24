@@ -1,0 +1,122 @@
+[
+  {
+    "num_nodes": 500,
+    "tx_count": 50,
+    "block_latency_s": 0.112042
+  },
+  {
+    "num_nodes": 500,
+    "tx_count": 100,
+    "block_latency_s": 0.23782
+  },
+  {
+    "num_nodes": 500,
+    "tx_count": 200,
+    "block_latency_s": 0.465164
+  },
+  {
+    "num_nodes": 500,
+    "tx_count": 500,
+    "block_latency_s": 1.158058
+  },
+  {
+    "num_nodes": 500,
+    "tx_count": 1000,
+    "block_latency_s": 2.258618
+  },
+  {
+    "num_nodes": 500,
+    "tx_count": 2000,
+    "block_latency_s": 4.552058
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 50,
+    "block_latency_s": 0.225234
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 100,
+    "block_latency_s": 0.463475
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 200,
+    "block_latency_s": 0.902494
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 500,
+    "block_latency_s": 2.205188
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 1000,
+    "block_latency_s": 4.409985
+  },
+  {
+    "num_nodes": 1000,
+    "tx_count": 2000,
+    "block_latency_s": 8.820156
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 50,
+    "block_latency_s": 0.429557
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 100,
+    "block_latency_s": 0.866232
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 200,
+    "block_latency_s": 1.722731
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 500,
+    "block_latency_s": 4.397938
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 1000,
+    "block_latency_s": 8.948036
+  },
+  {
+    "num_nodes": 2000,
+    "tx_count": 2000,
+    "block_latency_s": 18.256443
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 50,
+    "block_latency_s": 1.223965
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 100,
+    "block_latency_s": 2.508366
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 200,
+    "block_latency_s": 4.929416
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 500,
+    "block_latency_s": 11.6501
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 1000,
+    "block_latency_s": 22.342089
+  },
+  {
+    "num_nodes": 5000,
+    "tx_count": 2000,
+    "block_latency_s": 44.511401
+  }
+]
