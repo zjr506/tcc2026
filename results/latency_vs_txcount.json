@@ -1,0 +1,26 @@
+[
+  {
+    "tx_count": 50,
+    "block_latency_s": 0.435951
+  },
+  {
+    "tx_count": 100,
+    "block_latency_s": 0.880509
+  },
+  {
+    "tx_count": 200,
+    "block_latency_s": 1.810967
+  },
+  {
+    "tx_count": 500,
+    "block_latency_s": 4.593161
+  },
+  {
+    "tx_count": 1000,
+    "block_latency_s": 9.011726
+  },
+  {
+    "tx_count": 2000,
+    "block_latency_s": 18.195856
+  }
+]

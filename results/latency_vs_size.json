@@ -1,0 +1,38 @@
+[
+  {
+    "num_nodes": 500,
+    "mean_edges": 1969.3,
+    "per_tx_latency_ms": 2.663276,
+    "per_tx_latency_se_ms": 0.153065
+  },
+  {
+    "num_nodes": 1000,
+    "mean_edges": 3852.3,
+    "per_tx_latency_ms": 5.05728,
+    "per_tx_latency_se_ms": 0.10637
+  },
+  {
+    "num_nodes": 2000,
+    "mean_edges": 7577.3,
+    "per_tx_latency_ms": 9.344729,
+    "per_tx_latency_se_ms": 0.37468
+  },
+  {
+    "num_nodes": 5000,
+    "mean_edges": 18664.3,
+    "per_tx_latency_ms": 23.229678,
+    "per_tx_latency_se_ms": 0.340874
+  },
+  {
+    "num_nodes": 10000,
+    "mean_edges": 37108.7,
+    "per_tx_latency_ms": 45.290048,
+    "per_tx_latency_se_ms": 0.180352
+  },
+  {
+    "num_nodes": 20000,
+    "mean_edges": 74151.7,
+    "per_tx_latency_ms": 97.354105,
+    "per_tx_latency_se_ms": 2.362899
+  }
+]
