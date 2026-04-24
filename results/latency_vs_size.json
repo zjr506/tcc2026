@@ -2,37 +2,49 @@
   {
     "num_nodes": 500,
     "mean_edges": 1969.3,
-    "per_tx_latency_ms": 2.663276,
-    "per_tx_latency_se_ms": 0.153065
+    "alg1_ms": 2.2148,
+    "alg1_se_ms": 0.0203,
+    "alg12_ms": 2.3629,
+    "alg12_se_ms": 0.0539
   },
   {
     "num_nodes": 1000,
     "mean_edges": 3852.3,
-    "per_tx_latency_ms": 5.05728,
-    "per_tx_latency_se_ms": 0.10637
+    "alg1_ms": 4.4165,
+    "alg1_se_ms": 0.0546,
+    "alg12_ms": 4.5769,
+    "alg12_se_ms": 0.0726
   },
   {
     "num_nodes": 2000,
     "mean_edges": 7577.3,
-    "per_tx_latency_ms": 9.344729,
-    "per_tx_latency_se_ms": 0.37468
+    "alg1_ms": 8.8257,
+    "alg1_se_ms": 0.0838,
+    "alg12_ms": 9.2018,
+    "alg12_se_ms": 0.198
   },
   {
     "num_nodes": 5000,
     "mean_edges": 18664.3,
-    "per_tx_latency_ms": 23.229678,
-    "per_tx_latency_se_ms": 0.340874
+    "alg1_ms": 23.242,
+    "alg1_se_ms": 0.4475,
+    "alg12_ms": 23.0675,
+    "alg12_se_ms": 0.4756
   },
   {
     "num_nodes": 10000,
     "mean_edges": 37108.7,
-    "per_tx_latency_ms": 45.290048,
-    "per_tx_latency_se_ms": 0.180352
+    "alg1_ms": 44.7788,
+    "alg1_se_ms": 0.3523,
+    "alg12_ms": 45.5227,
+    "alg12_se_ms": 0.432
   },
   {
     "num_nodes": 20000,
     "mean_edges": 74151.7,
-    "per_tx_latency_ms": 97.354105,
-    "per_tx_latency_se_ms": 2.362899
+    "alg1_ms": 96.2781,
+    "alg1_se_ms": 1.5295,
+    "alg12_ms": 95.6215,
+    "alg12_se_ms": 1.3614
   }
 ]

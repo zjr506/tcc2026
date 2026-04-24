@@ -45,28 +45,124 @@
   ],
   "cumulative": [
     {
+      "num_nodes": 5000,
+      "num_blocks": 1,
+      "cumulative_mb": 0.137421
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 10,
+      "cumulative_mb": 1.374213
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 50,
+      "cumulative_mb": 6.871067
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 100,
+      "cumulative_mb": 13.742134
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 500,
+      "cumulative_mb": 68.71067
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 1000,
+      "cumulative_mb": 137.421341
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 1,
+      "cumulative_mb": 0.274846
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 10,
+      "cumulative_mb": 2.748458
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 50,
+      "cumulative_mb": 13.74229
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 100,
+      "cumulative_mb": 27.484581
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 500,
+      "cumulative_mb": 137.422905
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 1000,
+      "cumulative_mb": 274.84581
+    },
+    {
+      "num_nodes": 22000,
       "num_blocks": 1,
       "cumulative_mb": 0.604665
     },
     {
+      "num_nodes": 22000,
       "num_blocks": 10,
       "cumulative_mb": 6.046645
     },
     {
+      "num_nodes": 22000,
       "num_blocks": 50,
       "cumulative_mb": 30.233227
     },
     {
+      "num_nodes": 22000,
       "num_blocks": 100,
       "cumulative_mb": 60.466454
     },
     {
+      "num_nodes": 22000,
       "num_blocks": 500,
       "cumulative_mb": 302.332268
     },
     {
+      "num_nodes": 22000,
       "num_blocks": 1000,
       "cumulative_mb": 604.664536
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 1,
+      "cumulative_mb": 1.374242
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 10,
+      "cumulative_mb": 13.742416
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 50,
+      "cumulative_mb": 68.712078
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 100,
+      "cumulative_mb": 137.424156
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 500,
+      "cumulative_mb": 687.120781
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 1000,
+      "cumulative_mb": 1374.241562
     }
   ]
 }
