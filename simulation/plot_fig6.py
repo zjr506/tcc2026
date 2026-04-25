@@ -54,27 +54,48 @@ def _load(results_dir: str) -> tuple:
 # ---------------------------------------------------------------------------
 
 def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
-    xs = np.array([r["num_nodes"] for r in lv_size], dtype=float)
-    alg1 = np.array([r["alg1_ms"] for r in lv_size], dtype=float)
-    alg1_se = np.array([r["alg1_se_ms"] for r in lv_size], dtype=float)
-    alg12 = np.array([r["alg12_ms"] for r in lv_size], dtype=float)
-    alg12_se = np.array([r["alg12_se_ms"] for r in lv_size], dtype=float)
+    by_topo: dict = defaultdict(list)
+    for r in lv_size:
+        topo = r.get("topology", "Doar")
+        by_topo[topo].append(r)
 
-    ax.errorbar(xs, alg1, yerr=alg1_se, marker="o", markersize=5,
-                linewidth=1.4, capsize=2, color="#1f77b4", label="Algorithm 1")
-    ax.errorbar(xs, alg12, yerr=alg12_se, marker="s", markersize=5,
-                linewidth=1.4, capsize=2, color="#d62728", label="Algorithms 1+2")
+    TOPO_STYLES = {
+        "Doar": {"alg1": ("#1f77b4", "o", "-"),  "alg12": ("#d62728", "s", "-")},
+        "HK":   {"alg1": ("#1f77b4", "^", "--"), "alg12": ("#d62728", "D", "--")},
+    }
 
-    slope = float(np.dot(xs, alg12) / np.dot(xs, xs))
-    x_fit = np.linspace(xs.min(), xs.max(), 200)
-    ax.plot(x_fit, slope * x_fit, linestyle="--", linewidth=1.1,
-            color="#d62728", alpha=0.5,
-            label=f"linear fit ({slope*1e3:.2f}×10⁻³ ms/node)")
+    for topo in ("Doar", "HK"):
+        records = sorted(by_topo.get(topo, []), key=lambda r: r["num_nodes"])
+        if not records:
+            continue
+        xs = np.array([r["num_nodes"] for r in records], dtype=float)
+        alg1 = np.array([r["alg1_ms"] for r in records], dtype=float)
+        alg1_se = np.array([r["alg1_se_ms"] for r in records], dtype=float)
+        alg12 = np.array([r["alg12_ms"] for r in records], dtype=float)
+        alg12_se = np.array([r["alg12_se_ms"] for r in records], dtype=float)
+        c1, m1, ls1 = TOPO_STYLES[topo]["alg1"]
+        c12, m12, ls12 = TOPO_STYLES[topo]["alg12"]
+        ax.errorbar(xs, alg1, yerr=alg1_se, marker=m1, markersize=5,
+                    linewidth=1.4, capsize=2, linestyle=ls1, color=c1,
+                    label=f"Alg 1 ({topo})")
+        ax.errorbar(xs, alg12, yerr=alg12_se, marker=m12, markersize=5,
+                    linewidth=1.4, capsize=2, linestyle=ls12, color=c12,
+                    label=f"Alg 1+2 ({topo})")
+
+    doar_records = sorted(by_topo.get("Doar", []), key=lambda r: r["num_nodes"])
+    if doar_records:
+        xs_d = np.array([r["num_nodes"] for r in doar_records], dtype=float)
+        alg12_d = np.array([r["alg12_ms"] for r in doar_records], dtype=float)
+        slope = float(np.dot(xs_d, alg12_d) / np.dot(xs_d, xs_d))
+        x_fit = np.linspace(xs_d.min(), xs_d.max(), 200)
+        ax.plot(x_fit, slope * x_fit, linestyle=":", linewidth=1.0,
+                color="gray", alpha=0.7,
+                label=f"linear fit ({slope*1e3:.2f}×10⁻³ ms/node)")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Per-transaction latency (ms)")
     ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
+    ax.legend(fontsize=7.5, loc="upper left", framealpha=0.9)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 

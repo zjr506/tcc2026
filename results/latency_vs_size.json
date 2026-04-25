@@ -1,50 +1,110 @@
 [
   {
+    "topology": "Doar",
     "num_nodes": 500,
     "mean_edges": 1969.3,
-    "alg1_ms": 2.2148,
-    "alg1_se_ms": 0.0203,
-    "alg12_ms": 2.3629,
-    "alg12_se_ms": 0.0539
+    "alg1_ms": 2.6367,
+    "alg1_se_ms": 0.018,
+    "alg12_ms": 2.6584,
+    "alg12_se_ms": 0.0368
   },
   {
+    "topology": "Doar",
     "num_nodes": 1000,
     "mean_edges": 3852.3,
-    "alg1_ms": 4.4165,
-    "alg1_se_ms": 0.0546,
-    "alg12_ms": 4.5769,
-    "alg12_se_ms": 0.0726
+    "alg1_ms": 5.1874,
+    "alg1_se_ms": 0.0134,
+    "alg12_ms": 5.4089,
+    "alg12_se_ms": 0.1103
   },
   {
+    "topology": "Doar",
     "num_nodes": 2000,
     "mean_edges": 7577.3,
-    "alg1_ms": 8.8257,
-    "alg1_se_ms": 0.0838,
-    "alg12_ms": 9.2018,
-    "alg12_se_ms": 0.198
+    "alg1_ms": 10.2611,
+    "alg1_se_ms": 0.0411,
+    "alg12_ms": 10.3535,
+    "alg12_se_ms": 0.0615
   },
   {
+    "topology": "Doar",
     "num_nodes": 5000,
     "mean_edges": 18664.3,
-    "alg1_ms": 23.242,
-    "alg1_se_ms": 0.4475,
-    "alg12_ms": 23.0675,
-    "alg12_se_ms": 0.4756
+    "alg1_ms": 26.062,
+    "alg1_se_ms": 0.1022,
+    "alg12_ms": 26.0574,
+    "alg12_se_ms": 0.0751
   },
   {
+    "topology": "Doar",
     "num_nodes": 10000,
     "mean_edges": 37108.7,
-    "alg1_ms": 44.7788,
-    "alg1_se_ms": 0.3523,
-    "alg12_ms": 45.5227,
-    "alg12_se_ms": 0.432
+    "alg1_ms": 54.8181,
+    "alg1_se_ms": 0.834,
+    "alg12_ms": 55.6146,
+    "alg12_se_ms": 1.0405
   },
   {
+    "topology": "Doar",
     "num_nodes": 20000,
     "mean_edges": 74151.7,
-    "alg1_ms": 96.2781,
-    "alg1_se_ms": 1.5295,
-    "alg12_ms": 95.6215,
-    "alg12_se_ms": 1.3614
+    "alg1_ms": 110.7612,
+    "alg1_se_ms": 0.6732,
+    "alg12_ms": 109.2756,
+    "alg12_se_ms": 0.3205
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 500,
+    "mean_edges": 1980.3,
+    "alg1_ms": 2.5371,
+    "alg1_se_ms": 0.005,
+    "alg12_ms": 2.5892,
+    "alg12_se_ms": 0.01
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 1000,
+    "mean_edges": 3979.3,
+    "alg1_ms": 5.1003,
+    "alg1_se_ms": 0.0677,
+    "alg12_ms": 5.1074,
+    "alg12_se_ms": 0.0145
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 2000,
+    "mean_edges": 7978.0,
+    "alg1_ms": 10.2031,
+    "alg1_se_ms": 0.1295,
+    "alg12_ms": 10.2611,
+    "alg12_se_ms": 0.0267
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 5000,
+    "mean_edges": 19976.0,
+    "alg1_ms": 25.8127,
+    "alg1_se_ms": 0.0609,
+    "alg12_ms": 25.8163,
+    "alg12_se_ms": 0.1087
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 10000,
+    "mean_edges": 39974.7,
+    "alg1_ms": 54.5527,
+    "alg1_se_ms": 1.4023,
+    "alg12_ms": 55.4651,
+    "alg12_se_ms": 0.3177
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 20000,
+    "mean_edges": 79973.0,
+    "alg1_ms": 111.619,
+    "alg1_se_ms": 1.313,
+    "alg12_ms": 110.2978,
+    "alg12_se_ms": 0.5
   }
 ]

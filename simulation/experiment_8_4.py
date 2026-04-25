@@ -93,6 +93,16 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
     return _to_adj(G, num_nodes)
 
 
+def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
+    """Holme-Kim power-law cluster graph (m=4, p=0.5).
+    Adds realistic clustering (~0.22) while preserving scale-free
+    degree distribution and small-world diameter.
+    """
+    G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.5,
+                                   seed=int(rng.integers(0, 2**31 - 1)))
+    return _to_adj(G, num_nodes)
+
+
 def make_watts_strogatz(
     num_nodes: int, mean_degree: int, rng: np.random.Generator
 ) -> List[np.ndarray]:
@@ -310,6 +320,62 @@ def experiment_sybil(
 
 
 # ---------------------------------------------------------------------------
+# Topology comparison — structural properties of Doar-like vs Holme-Kim
+# ---------------------------------------------------------------------------
+
+def _graph_from_adj(adj: List[np.ndarray]) -> nx.Graph:
+    G = nx.Graph()
+    n = len(adj)
+    G.add_nodes_from(range(n))
+    for u, nbrs in enumerate(adj):
+        for v in nbrs:
+            if v > u:
+                G.add_edge(u, v)
+    return G
+
+
+def topology_comparison(
+    sizes: List[int] = (1000, 2000, 5000),
+    num_seeds: int = 3,
+) -> List[dict]:
+    """Measure clustering, degree stats, and approximate diameter
+    for Doar-like and Holme-Kim topologies."""
+    results = []
+    for num_nodes in sizes:
+        for topo_name, topo_fn in (("Doar", make_doar_like), ("HK", make_holme_kim)):
+            for seed in range(num_seeds):
+                rng = np.random.default_rng(seed * 41 + 3 + num_nodes)
+                adj = topo_fn(num_nodes, rng)
+                G = _graph_from_adj(adj)
+                degrees = np.array([d for _, d in G.degree()], dtype=float)
+                clustering = nx.average_clustering(G)
+                sample = list(
+                    np.random.default_rng(seed).choice(num_nodes, size=30, replace=False)
+                )
+                max_depth = 0
+                for src in sample:
+                    lengths = nx.single_source_shortest_path_length(G, src)
+                    if lengths:
+                        max_depth = max(max_depth, max(lengths.values()))
+                results.append({
+                    "topology": topo_name,
+                    "num_nodes": num_nodes,
+                    "seed": seed,
+                    "mean_degree": round(float(degrees.mean()), 3),
+                    "std_degree": round(float(degrees.std()), 3),
+                    "clustering": round(clustering, 4),
+                    "approx_diameter": int(max_depth),
+                })
+                print(
+                    f"  [topo] {topo_name} |V|={num_nodes} seed={seed}: "
+                    f"deg={degrees.mean():.1f}±{degrees.std():.1f}  "
+                    f"clust={clustering:.3f}  diam≥{max_depth}",
+                    flush=True,
+                )
+    return results
+
+
+# ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 
@@ -339,6 +405,12 @@ def main() -> None:
 
     with open(os.path.join(out_dir, "sybil.json"), "w") as fh:
         json.dump([asdict(r) for r in sybil], fh)
+
+    print("[experiment_8_4] running topology comparison ...")
+    topo_cmp = topology_comparison(sizes=[1000, 2000, 5000], num_seeds=3)
+    with open(os.path.join(out_dir, "topology_comparison.json"), "w") as fh:
+        json.dump(topo_cmp, fh, indent=2)
+    print(f"  -> {len(topo_cmp)} topology comparison records")
 
     print("[experiment_8_4] done.")
 

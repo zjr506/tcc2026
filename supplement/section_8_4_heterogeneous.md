@@ -22,13 +22,16 @@ revenue and forwarding count are scaled by C_i / W_i, because the excess
 forwards arrive after downstream peers have already received the
 transaction via a faster route.
 
-We generate a 2000-node network with the same algorithm as in Section
-8.1, assign tiers as above, and set the relay share to 50% of f0. The
+We generate a 2000-node network with the same algorithm as in Section 8.1
+(Doar, "A better model for generating test networks," IEEE GLOBECOM,
+1996), assign tiers as above, and set the relay share to 50% of f0. The
 profit rate (u − f ) / f0 is averaged over 5 random seeds. For the Sybil
-experiment we use a 300-node Watts–Strogatz substrate with mean degree
-20, matching Section 8.2. In each of 3 seeds we select one adversary
-from every tier, who creates x ∈ {0, 5, 10, 20, 30, 50} pseudonymous
-nodes forming a clique; each pseudonymous transaction pays 0.1 f0.
+experiment we use a 300-node Watts–Strogatz substrate (Watts and Strogatz,
+"Collective dynamics of 'small-world' networks," Nature, 1998) with mean
+degree 20, matching Section 8.2. In each of 3 seeds we select one
+adversary from every tier, who creates x ∈ {0, 5, 10, 20, 30, 50}
+pseudonymous nodes forming a clique; each pseudonymous transaction pays
+0.1 f0.
 
 Fig. 5(a) shows the profit rate against the number of links per tier.
 Within every tier, the profit rate increases monotonically in the number
@@ -68,3 +71,27 @@ Sections 8.1 and 8.2 extend to heterogeneous cloud node populations.
 We have also verified that the active user node attack of Section 8.3
 remains unprofitable under the same heterogeneity model but omit a
 separate figure for space.
+
+To assess how well the test topology approximates real cloud blockchain
+networks, we replicate the fairness experiment on a second model: the
+Holme–Kim power-law cluster graph (Holme and Kim, "Growing scale-free
+networks with tunable clustering," Physical Review E, 2002) with the same
+m = 4 edges per new node and triangle formation probability p = 0.5. Real
+Bitcoin network measurements (Franzoni et al., "ATOM: Active topology
+monitoring for the Bitcoin peer-to-peer network," Peer-to-Peer Networking
+and Applications, 2022; Essaid et al., "Characterizing the Bitcoin network
+topology with node-probe," International Journal of Network Management,
+2023) report a clustering coefficient of 0.1–0.3 and a diameter of 5–7
+hops. Our topology comparison shows that the Doar model yields clustering
+of 0.004–0.024 — well below the real-network range — whereas the
+Holme–Kim model achieves 0.21–0.24 across |V| = 1 000–5 000, placing it
+squarely within 0.1–0.3. Both models share a similar average degree (~8)
+and diameter of 5–6 hops. Under the Holme–Kim topology the per-tier unit
+revenues remain within 0.7% of the Doar values, and the Sybil profit
+rates remain at or below zero for all pseudonym counts and all tiers.
+This insensitivity to clustering arises because Algorithm 2 operates on
+a BFS tree rooted at the transaction source: the additional triangles
+introduced by Holme–Kim are pruned during graph reduction and do not
+create new incentive pathways. The heterogeneity results reported in this
+section therefore hold across the realistic range of clustered scale-free
+topologies that characterise real cloud blockchain deployments.
