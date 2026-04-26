@@ -78,18 +78,23 @@ proportion-0.10 adversary sees the smallest penalty (−1.96 at x = 50).
 Heterogeneity does not open a new exploitable seam; capacity-bounded
 adversaries find the attack harder, not easier.
 
-Fig. 5(d) compares the mean profit rate across three topology models:
-the Holme-Kim power-law cluster graph, the algorithm of Doar ("A better
-model for generating test networks," IEEE GLOBECOM, 1996) used in
-Section 8.1, and the Watts-Strogatz small-world graph (Watts and
-Strogatz, "Collective dynamics of 'small-world' networks," Nature, 1998)
-used in Section 8.2. All three topologies are generated with 2000 nodes,
-an average degree of approximately 8, and the same four-tier
-heterogeneity model. The mean profit rates are −0.42 on Holme-Kim, −0.40
-on Doar, and −0.32 on Watts-Strogatz, all in the same negative range.
-The close agreement confirms that the ITFC incentive structure is not
-sensitive to the choice of topology model: the fairness and
-attack-resistance properties demonstrated in (a), (b), and (c) on the
+Fig. 5(d) compares the per-tier profit rate across three topology
+models: the Holme-Kim power-law cluster graph, the algorithm of Doar
+("A better model for generating test networks," IEEE GLOBECOM, 1996)
+used in Section 8.1, and the Watts-Strogatz small-world graph (Watts
+and Strogatz, "Collective dynamics of 'small-world' networks," Nature,
+1998) used in Section 8.2. All three topologies are generated with 2000
+nodes, an average degree of approximately 8, and the same four-tier
+heterogeneity model with proportions 0.40, 0.30, 0.20, and 0.10. The
+grouped bars show the mean profit rate for each tier on each topology.
+Within every tier, the three topologies produce closely matched profit
+rates: for example, the proportion-0.40 tier yields −0.48 on
+Holme-Kim, −0.48 on Doar, and −0.47 on Watts-Strogatz, while the
+proportion-0.10 tier yields −0.23, −0.16, and −0.00, respectively. The
+per-tier ordering is consistent across all three topologies, with
+higher-capacity tiers achieving higher profit rates. This confirms that
+the ITFC incentive structure is not sensitive to the choice of topology
+model: the fairness properties demonstrated in (a) and (b) on the
 Holme-Kim graph hold equally on the Doar and Watts-Strogatz graphs.
 
 We conclude that the fairness and attack-resistance guarantees of

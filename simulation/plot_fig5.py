@@ -164,33 +164,41 @@ def _plot_subfig_c(ax: plt.Axes, sybil: List[dict]) -> None:
 
 
 # -----------------------------------------------------------------------
-# (d) Mean profit rate by topology (bar chart)
+# (d) Per-tier profit rate by topology (grouped bar chart)
 # -----------------------------------------------------------------------
 
 def _plot_subfig_d(ax: plt.Axes, fairness: List[dict]) -> None:
     topo_order = ["HK", "Doar", "WS"]
-    labels = []
-    means = []
-    sems = []
-    for topo_key in topo_order:
+    topo_labels = [TOPO_KEY_TO_LABEL[k] for k in topo_order]
+    n_topo = len(topo_order)
+    n_tier = len(TIERS)
+    bar_width = 0.18
+    x_pos = np.arange(n_tier)
+
+    for i, topo_key in enumerate(topo_order):
         subset = [r for r in fairness if r.get("topology") == topo_key]
         if not subset:
             continue
-        label = TOPO_KEY_TO_LABEL[topo_key]
-        labels.append(label)
-        vals = np.array([r["profit_rate"] for r in subset], dtype=np.float64)
-        means.append(vals.mean())
-        sems.append(vals.std(ddof=1) / np.sqrt(len(vals)))
+        means = []
+        sems = []
+        for tier in TIERS:
+            vals = [r["profit_rate"] for r in subset if r["tier"] == tier]
+            means.append(np.mean(vals))
+            sems.append(np.std(vals, ddof=1) / np.sqrt(len(vals))
+                       if len(vals) > 1 else 0.0)
+        offset = (i - (n_topo - 1) / 2) * bar_width
+        label = topo_labels[i]
+        ax.bar(x_pos + offset, means, bar_width, yerr=sems,
+               color=TOPO_COLORS[label], capsize=3,
+               edgecolor="white", label=label)
 
-    x_pos = np.arange(len(labels))
-    colors = [TOPO_COLORS[l] for l in labels]
-    ax.bar(x_pos, means, yerr=sems, color=colors, capsize=4,
-           edgecolor="white", width=0.55)
     ax.set_xticks(x_pos)
-    ax.set_xticklabels(labels, fontsize=8)
+    ax.set_xticklabels(TIERS, fontsize=8)
+    ax.set_xlabel("Tier (proportion)")
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
-    ax.set_ylabel("Mean Profit Rate")
+    ax.set_ylabel("Profit Rate")
     ax.grid(alpha=0.3, axis="y")
+    ax.legend(fontsize=7.5, loc="upper left", framealpha=0.9)
     ax.text(0.5, -0.23, "(d)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
