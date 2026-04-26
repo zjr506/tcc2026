@@ -174,7 +174,7 @@ def experiment_fairness(
     records: List[FairnessRecord] = []
     for seed in range(num_seeds):
         rng = np.random.default_rng(seed * 17 + 1)
-        adj = make_doar_like(num_nodes, rng)
+        adj = make_holme_kim(num_nodes, rng)
         tiers = assign_tiers(num_nodes, rng)
 
         sources = list(range(num_nodes))  # one tx per cloud node
@@ -219,9 +219,9 @@ def experiment_sybil(
     f0: float = 1.0,
     pseudonym_range: Sequence[int] = (0, 5, 10, 15, 20, 30, 40, 50),
 ) -> List[SybilRecord]:
-    """Sybil attack experiment for Fig 5(c).
+    """Sybil attack experiment for Fig 5(d).
 
-    Honest cloud nodes form a Watts-Strogatz substrate (matching §8.2).
+    Honest cloud nodes form a Holme-Kim substrate.
     A randomly chosen node from each tier is converted into the adversary
     and creates x pseudonymous nodes that form a clique with it. Each
     honest tx pays f0; each pseudonym tx pays fee_fraction * f0.
@@ -231,8 +231,8 @@ def experiment_sybil(
     for seed in range(num_seeds):
         rng = np.random.default_rng(seed * 31 + 7)
 
-        # Build the honest WS substrate once per seed.
-        adj_honest = make_watts_strogatz(num_honest, mean_degree, rng)
+        # Build the honest Holme-Kim substrate once per seed.
+        adj_honest = make_holme_kim(num_honest, rng)
         tiers_honest = assign_tiers(num_honest, rng)
         # Pick one representative adversary candidate of each tier.
         adv_idx_by_tier: Dict[str, int] = {}
