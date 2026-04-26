@@ -164,11 +164,16 @@ def experiment_fairness(
     relay_share: float = 0.5,
     f0: float = 1.0,
 ) -> List[FairnessRecord]:
-    """Heterogeneous-resource fairness experiment for Fig 5(a, b, c).
-    Runs on both Doar and Holme-Kim topologies.
+    """Heterogeneous-resource fairness experiment for Fig 5(a, b, d).
+    Runs on Doar, Holme-Kim, and Watts-Strogatz topologies.
     """
     records: List[FairnessRecord] = []
-    for topo_name, topo_fn in (("Doar", make_doar_like), ("HK", make_holme_kim)):
+    topo_list = [
+        ("Doar", make_doar_like),
+        ("HK", make_holme_kim),
+        ("WS", lambda n, rng: make_watts_strogatz(n, 8, rng)),
+    ]
+    for topo_name, topo_fn in topo_list:
         print(f"  [fairness] topology={topo_name} ...", flush=True)
         for seed in range(num_seeds):
             rng = np.random.default_rng(seed * 17 + 1)
@@ -317,10 +322,15 @@ def topology_comparison(
     num_seeds: int = 3,
 ) -> List[dict]:
     """Measure clustering, degree stats, and approximate diameter
-    for Doar-like and Holme-Kim topologies."""
+    for Doar-like, Holme-Kim, and Watts-Strogatz topologies."""
     results = []
+    topo_list = [
+        ("Doar", make_doar_like),
+        ("HK", make_holme_kim),
+        ("WS", lambda n, rng: make_watts_strogatz(n, 8, rng)),
+    ]
     for num_nodes in sizes:
-        for topo_name, topo_fn in (("Doar", make_doar_like), ("HK", make_holme_kim)):
+        for topo_name, topo_fn in topo_list:
             for seed in range(num_seeds):
                 rng = np.random.default_rng(seed * 41 + 3 + num_nodes)
                 adj = topo_fn(num_nodes, rng)

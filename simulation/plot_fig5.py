@@ -4,11 +4,11 @@ results produced by `python3 -m simulation.experiment_8_4`.
 
   (a) Per-tier profit rate vs. number of links       — Holme-Kim
   (b) Per-tier sufficient forwarding count vs. links  — Holme-Kim
-  (c) Mean profit rate vs. links by topology          — Holme-Kim vs Doar
-  (d) Per-tier Sybil-attack profit rate vs. pseudonyms — Holme-Kim
+  (c) Per-tier Sybil-attack profit rate vs. pseudonyms — Holme-Kim
+  (d) Mean profit rate by topology: Holme-Kim, Doar, Watts-Strogatz
 
-Each subfigure uses exactly one label type: either tier proportions
-(0.40, 0.30, 0.20, 0.10) or topology names (Holme-Kim, Doar).
+Subfigures (a)-(c) use tier proportion labels (0.40, 0.30, 0.20, 0.10).
+Subfigure (d) uses topology name labels (Holme-Kim, Doar, Watts-Strogatz).
 
 Run:
     python3 -m simulation.plot_fig5
@@ -37,8 +37,8 @@ TIER_COLORS = {
 }
 TIER_MARKERS = {"0.40": "o", "0.30": "s", "0.20": "^", "0.10": "D"}
 
-TOPO_COLORS = {"Holme-Kim": "#1f77b4", "Doar": "#d62728"}
-TOPO_MARKERS = {"Holme-Kim": "o", "Doar": "s"}
+TOPO_KEY_TO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
+TOPO_COLORS = {"Holme-Kim": "#1f77b4", "Doar": "#d62728", "Watts-Strogatz": "#2ca02c"}
 
 DEGREE_BINS = [4, 8, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 61]
 
@@ -64,23 +64,6 @@ def _bin_by_degree_per_tier(
     return out
 
 
-def _bin_by_degree_all(
-    records: List[dict], key: str, bins: List[int],
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    edges = np.array(bins, dtype=np.float64)
-    centers = 0.5 * (edges[:-1] + edges[1:])
-    deg = np.array([r["degree"] for r in records], dtype=np.float64)
-    val = np.array([r[key] for r in records], dtype=np.float64)
-    means = np.full(len(centers), np.nan)
-    sems = np.full(len(centers), np.nan)
-    for b in range(len(centers)):
-        mask = (deg >= edges[b]) & (deg < edges[b + 1])
-        if mask.sum() >= 3:
-            means[b] = val[mask].mean()
-            sems[b] = val[mask].std(ddof=1) / np.sqrt(mask.sum())
-    return centers, means, sems
-
-
 def _load(results_dir: str) -> Tuple[List[dict], List[dict]]:
     with open(os.path.join(results_dir, "fairness.json")) as fh:
         fairness = json.load(fh)
@@ -102,7 +85,7 @@ def _plot_subfig_a(ax: plt.Axes, fairness: List[dict]) -> None:
         ax.errorbar(
             x[valid], y[valid], yerr=se[valid],
             color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2,
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
         )
 
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
@@ -110,11 +93,7 @@ def _plot_subfig_a(ax: plt.Axes, fairness: List[dict]) -> None:
     ax.set_ylabel("Profit Rate")
     ax.set_title("Holme-Kim", fontsize=9)
     ax.grid(alpha=0.3)
-    handles = [
-        Line2D([0], [0], color=TIER_COLORS[t], marker=TIER_MARKERS[t],
-               markersize=5, linewidth=1.4, label=t) for t in TIERS
-    ]
-    ax.legend(handles=handles, fontsize=8, loc="upper left", framealpha=0.9)
+    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
@@ -132,55 +111,23 @@ def _plot_subfig_b(ax: plt.Axes, fairness: List[dict]) -> None:
         ax.errorbar(
             x[valid], y[valid] / 1e3, yerr=se[valid] / 1e3,
             color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2,
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
         )
 
     ax.set_xlabel("Number of Links")
     ax.set_ylabel(r"Sufficient Forwarding Times ($\times 10^3$)")
     ax.set_title("Holme-Kim", fontsize=9)
     ax.grid(alpha=0.3)
-    handles = [
-        Line2D([0], [0], color=TIER_COLORS[t], marker=TIER_MARKERS[t],
-               markersize=5, linewidth=1.4, label=t) for t in TIERS
-    ]
-    ax.legend(handles=handles, fontsize=8, loc="upper left", framealpha=0.9)
+    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
     ax.text(0.5, -0.23, "(b)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
 
 # -----------------------------------------------------------------------
-# (c) Mean profit rate vs links — by topology (Holme-Kim vs Doar)
+# (c) Per-tier Sybil profit rate vs pseudonyms — Holme-Kim only
 # -----------------------------------------------------------------------
 
-def _plot_subfig_c(ax: plt.Axes, fairness: List[dict]) -> None:
-    topo_map = {"HK": "Holme-Kim", "Doar": "Doar"}
-    for topo_key, topo_label in topo_map.items():
-        subset = [r for r in fairness if r.get("topology", "HK") == topo_key]
-        if not subset:
-            continue
-        x, y, se = _bin_by_degree_all(subset, "profit_rate", DEGREE_BINS)
-        valid = ~np.isnan(y)
-        ax.errorbar(
-            x[valid], y[valid], yerr=se[valid],
-            color=TOPO_COLORS[topo_label], marker=TOPO_MARKERS[topo_label],
-            markersize=5, linewidth=1.4, capsize=2,
-            label=topo_label,
-        )
-
-    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
-    ax.set_xlabel("Number of Links")
-    ax.set_ylabel("Mean Profit Rate")
-    ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
-    ax.text(0.5, -0.23, "(c)", transform=ax.transAxes,
-            ha="center", va="top", fontsize=10)
-
-
-# -----------------------------------------------------------------------
-# (d) Per-tier Sybil profit rate vs pseudonyms — Holme-Kim only
-# -----------------------------------------------------------------------
-
-def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
+def _plot_subfig_c(ax: plt.Axes, sybil: List[dict]) -> None:
     subset = [r for r in sybil if r.get("substrate", "HK") == "HK"]
     xs = sorted({r["pseudonym_count"] for r in subset})
 
@@ -203,7 +150,7 @@ def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
         ax.errorbar(
             xs, np.array(means), yerr=sems,
             color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2,
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
         )
 
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
@@ -211,11 +158,39 @@ def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
     ax.set_ylabel("Profit Rate")
     ax.set_title("Holme-Kim", fontsize=9)
     ax.grid(alpha=0.3)
-    handles = [
-        Line2D([0], [0], color=TIER_COLORS[t], marker=TIER_MARKERS[t],
-               markersize=5, linewidth=1.4, label=t) for t in TIERS
-    ]
-    ax.legend(handles=handles, fontsize=8, loc="lower left", framealpha=0.9)
+    ax.legend(fontsize=8, loc="lower left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(c)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
+
+
+# -----------------------------------------------------------------------
+# (d) Mean profit rate by topology (bar chart)
+# -----------------------------------------------------------------------
+
+def _plot_subfig_d(ax: plt.Axes, fairness: List[dict]) -> None:
+    topo_order = ["HK", "Doar", "WS"]
+    labels = []
+    means = []
+    sems = []
+    for topo_key in topo_order:
+        subset = [r for r in fairness if r.get("topology") == topo_key]
+        if not subset:
+            continue
+        label = TOPO_KEY_TO_LABEL[topo_key]
+        labels.append(label)
+        vals = np.array([r["profit_rate"] for r in subset], dtype=np.float64)
+        means.append(vals.mean())
+        sems.append(vals.std(ddof=1) / np.sqrt(len(vals)))
+
+    x_pos = np.arange(len(labels))
+    colors = [TOPO_COLORS[l] for l in labels]
+    ax.bar(x_pos, means, yerr=sems, color=colors, capsize=4,
+           edgecolor="white", width=0.55)
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(labels, fontsize=8)
+    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
+    ax.set_ylabel("Mean Profit Rate")
+    ax.grid(alpha=0.3, axis="y")
     ax.text(0.5, -0.23, "(d)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
@@ -235,8 +210,8 @@ def main() -> None:
     fig, axes = plt.subplots(2, 2, figsize=(9.5, 7.4))
     _plot_subfig_a(axes[0, 0], fairness)
     _plot_subfig_b(axes[0, 1], fairness)
-    _plot_subfig_c(axes[1, 0], fairness)
-    _plot_subfig_d(axes[1, 1], sybil)
+    _plot_subfig_c(axes[1, 0], sybil)
+    _plot_subfig_d(axes[1, 1], fairness)
     fig.tight_layout()
     fig.savefig(fig_path_pdf, bbox_inches="tight")
     fig.savefig(fig_path_png, bbox_inches="tight", dpi=160)

@@ -54,6 +54,33 @@
     "approx_diameter": 5
   },
   {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.845,
+    "clustering": 0.4785,
+    "approx_diameter": 8
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.831,
+    "clustering": 0.473,
+    "approx_diameter": 8
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.867,
+    "clustering": 0.484,
+    "approx_diameter": 8
+  },
+  {
     "topology": "Doar",
     "num_nodes": 2000,
     "seed": 0,
@@ -108,6 +135,33 @@
     "approx_diameter": 5
   },
   {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.861,
+    "clustering": 0.4737,
+    "approx_diameter": 9
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.882,
+    "clustering": 0.4737,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.876,
+    "clustering": 0.4763,
+    "approx_diameter": 9
+  },
+  {
     "topology": "Doar",
     "num_nodes": 5000,
     "seed": 0,
@@ -160,5 +214,32 @@
     "std_degree": 12.646,
     "clustering": 0.2136,
     "approx_diameter": 6
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.889,
+    "clustering": 0.47,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.869,
+    "clustering": 0.4773,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.875,
+    "clustering": 0.4778,
+    "approx_diameter": 10
   }
 ]
