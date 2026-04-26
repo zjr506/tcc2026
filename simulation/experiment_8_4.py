@@ -151,6 +151,7 @@ def aggregate_block(
 
 @dataclass
 class FairnessRecord:
+    topology: str
     tier: str
     degree: int
     profit_rate: float
@@ -163,39 +164,35 @@ def experiment_fairness(
     relay_share: float = 0.5,
     f0: float = 1.0,
 ) -> List[FairnessRecord]:
-    """Heterogeneous-resource fairness experiment for Fig 5(a, b).
-
-    Each cloud node serves one user node which broadcasts one transaction
-    with fee f0; relay revenue per transaction is relay_share * f0.
-    Aggregates per-node profit rate (u-f)/f0 across runs (homogeneous mining
-    is assumed for simplicity, as in §8.1 — equal block-generator probability
-    so block reward distributes equally across nodes).
+    """Heterogeneous-resource fairness experiment for Fig 5(a, b, c).
+    Runs on both Doar and Holme-Kim topologies.
     """
     records: List[FairnessRecord] = []
-    for seed in range(num_seeds):
-        rng = np.random.default_rng(seed * 17 + 1)
-        adj = make_holme_kim(num_nodes, rng)
-        tiers = assign_tiers(num_nodes, rng)
+    for topo_name, topo_fn in (("Doar", make_doar_like), ("HK", make_holme_kim)):
+        print(f"  [fairness] topology={topo_name} ...", flush=True)
+        for seed in range(num_seeds):
+            rng = np.random.default_rng(seed * 17 + 1)
+            adj = topo_fn(num_nodes, rng)
+            tiers = assign_tiers(num_nodes, rng)
 
-        sources = list(range(num_nodes))  # one tx per cloud node
-        w_per_tx = relay_share * f0
-        revenue, forwards = aggregate_block(adj, sources, w_per_tx, tiers)
+            sources = list(range(num_nodes))
+            w_per_tx = relay_share * f0
+            revenue, forwards = aggregate_block(adj, sources, w_per_tx, tiers)
 
-        # Block-generator share goes uniformly to all cloud nodes (§8.1
-        # assumption: equal mining probability for fairness measurement).
-        block_share = (1.0 - relay_share) * f0 * num_nodes / num_nodes  # = (1-relay_share)*f0
-        u = revenue + block_share
-        f_cost = f0  # one user transaction fee per cloud node
-        profit_rate = (u - f_cost) / f0
+            block_share = (1.0 - relay_share) * f0
+            u = revenue + block_share
+            f_cost = f0
+            profit_rate = (u - f_cost) / f0
 
-        deg = np.array([len(adj[i]) for i in range(num_nodes)], dtype=np.int64)
-        for i in range(num_nodes):
-            records.append(FairnessRecord(
-                tier=tiers[i],
-                degree=int(deg[i]),
-                profit_rate=float(profit_rate[i]),
-                forwards=float(forwards[i]),
-            ))
+            deg = np.array([len(adj[i]) for i in range(num_nodes)], dtype=np.int64)
+            for i in range(num_nodes):
+                records.append(FairnessRecord(
+                    topology=topo_name,
+                    tier=tiers[i],
+                    degree=int(deg[i]),
+                    profit_rate=float(profit_rate[i]),
+                    forwards=float(forwards[i]),
+                ))
     return records
 
 
@@ -205,117 +202,98 @@ def experiment_fairness(
 
 @dataclass
 class SybilRecord:
+    substrate: str
     adversary_tier: str
     pseudonym_count: int
     profit_rate: float
 
 
 def experiment_sybil(
-    num_honest: int = 500,
+    num_honest: int = 300,
     mean_degree: int = 20,
-    num_seeds: int = 4,
+    num_seeds: int = 3,
     fee_fraction: float = 0.10,
     relay_share: float = 0.5,
     f0: float = 1.0,
-    pseudonym_range: Sequence[int] = (0, 5, 10, 15, 20, 30, 40, 50),
+    pseudonym_range: Sequence[int] = (0, 5, 10, 20, 30, 50),
 ) -> List[SybilRecord]:
     """Sybil attack experiment for Fig 5(d).
-
-    Honest cloud nodes form a Holme-Kim substrate.
-    A randomly chosen node from each tier is converted into the adversary
-    and creates x pseudonymous nodes that form a clique with it. Each
-    honest tx pays f0; each pseudonym tx pays fee_fraction * f0.
-    Profit rate = (u - f)/f0 with f = x * fee_fraction * f0.
+    Runs on both Watts-Strogatz (matching §8.2) and Holme-Kim substrates.
     """
     records: List[SybilRecord] = []
-    for seed in range(num_seeds):
-        rng = np.random.default_rng(seed * 31 + 7)
+    substrate_options = [
+        ("WS", lambda n, rng: make_watts_strogatz(n, mean_degree, rng)),
+        ("HK", lambda n, rng: make_holme_kim(n, rng)),
+    ]
+    for substrate_name, substrate_fn in substrate_options:
+        print(f"  [sybil] substrate={substrate_name} ...", flush=True)
+        for seed in range(num_seeds):
+            rng = np.random.default_rng(seed * 31 + 7)
+            adj_honest = substrate_fn(num_honest, rng)
+            tiers_honest = assign_tiers(num_honest, rng)
+            # Pick one representative adversary candidate of each tier.
+            adv_idx_by_tier: Dict[str, int] = {}
+            for tier in TIER_NAMES:
+                cand = [i for i, t in enumerate(tiers_honest) if t == tier]
+                if cand:
+                    adv_idx_by_tier[tier] = int(rng.choice(cand))
 
-        # Build the honest Holme-Kim substrate once per seed.
-        adj_honest = make_holme_kim(num_honest, rng)
-        tiers_honest = assign_tiers(num_honest, rng)
-        # Pick one representative adversary candidate of each tier.
-        adv_idx_by_tier: Dict[str, int] = {}
-        for tier in TIER_NAMES:
-            cand = [i for i, t in enumerate(tiers_honest) if t == tier]
-            if cand:
-                adv_idx_by_tier[tier] = int(rng.choice(cand))
+            # Compute the no-attack baseline: same substrate, no pseudonyms.
+            w_h_base = relay_share * f0
+            rev_base, _ = aggregate_block(adj_honest, list(range(num_honest)),
+                                          w_h_base, tiers_honest)
+            block_pool_base = (1 - relay_share) * num_honest * f0
+            baseline_by_node = (rev_base + block_pool_base / num_honest - f0) / f0
 
-        # Compute the no-attack baseline: same substrate, no pseudonyms.
-        # The baseline profit rate for any honest node of a given tier is
-        # (honest_relay + honest_block_share - f0) / f0.
-        w_h_base = relay_share * f0
-        rev_base, _ = aggregate_block(adj_honest, list(range(num_honest)),
-                                      w_h_base, tiers_honest)
-        block_pool_base = (1 - relay_share) * num_honest * f0
-        baseline_by_node = (rev_base + block_pool_base / num_honest - f0) / f0
+            for adv_tier, adv_idx in adv_idx_by_tier.items():
+                baseline_rate = float(baseline_by_node[adv_idx])
+                for x in pseudonym_range:
+                    n = num_honest + x
+                    adj_py: List[List[int]] = [list(neigh.tolist()) for neigh in adj_honest]
+                    for _ in range(x):
+                        adj_py.append([])
+                    clique = [adv_idx] + list(range(num_honest, num_honest + x))
+                    for a in clique:
+                        existing = set(adj_py[a])
+                        for b in clique:
+                            if a != b and b not in existing:
+                                adj_py[a].append(b)
+                                existing.add(b)
+                    adj = [np.asarray(a, dtype=np.int64) for a in adj_py]
+                    tiers = list(tiers_honest) + [adv_tier] * x
 
-        for adv_tier, adv_idx in adv_idx_by_tier.items():
-            baseline_rate = float(baseline_by_node[adv_idx])
-            for x in pseudonym_range:
-                # Build extended graph: honest + x pseudonymous nodes,
-                # adversary + pseudonyms form a clique.
-                n = num_honest + x
-                adj_py: List[List[int]] = [list(neigh.tolist()) for neigh in adj_honest]
-                for _ in range(x):
-                    adj_py.append([])
-                clique = [adv_idx] + list(range(num_honest, num_honest + x))
-                clique_set = set(clique)
-                for a in clique:
-                    existing = set(adj_py[a])
-                    for b in clique:
-                        if a != b and b not in existing:
-                            adj_py[a].append(b)
-                            existing.add(b)
-                adj = [np.asarray(a, dtype=np.int64) for a in adj_py]
-                # Pseudonyms inherit the adversary's resource class.
-                tiers = list(tiers_honest) + [adv_tier] * x
+                    honest_sources = list(range(num_honest))
+                    pseudo_sources = list(range(num_honest, n))
 
-                # All honest nodes + adversary broadcast 1 tx at fee f0.
-                # Each pseudonym broadcasts 1 tx at fee fee_fraction * f0.
-                honest_sources = list(range(num_honest))
-                pseudo_sources = list(range(num_honest, n))
+                    rev = np.zeros(n, dtype=np.float64)
+                    fwd = np.zeros(n, dtype=np.int64)
+                    w_h = relay_share * f0
+                    rev_h, fwd_h = aggregate_block(adj, honest_sources, w_h, tiers)
+                    rev += rev_h
+                    fwd += fwd_h
+                    w_p = relay_share * fee_fraction * f0
+                    if pseudo_sources:
+                        rev_p, fwd_p = aggregate_block(adj, pseudo_sources, w_p, tiers)
+                        rev += rev_p
+                        fwd += fwd_p
 
-                rev = np.zeros(n, dtype=np.float64)
-                fwd = np.zeros(n, dtype=np.int64)
-                # Honest transactions.
-                w_h = relay_share * f0
-                rev_h, fwd_h = aggregate_block(adj, honest_sources, w_h, tiers)
-                rev += rev_h
-                fwd += fwd_h
-                # Pseudonym transactions (lower fee).
-                w_p = relay_share * fee_fraction * f0
-                if pseudo_sources:
-                    rev_p, fwd_p = aggregate_block(adj, pseudo_sources, w_p, tiers)
-                    rev += rev_p
-                    fwd += fwd_p
+                    adv_relay = float(rev[adv_idx] + rev[num_honest:].sum())
+                    total_fees = num_honest * f0 + x * fee_fraction * f0
+                    block_pool = (1 - relay_share) * total_fees
+                    adv_block = block_pool / num_honest
+                    u = adv_relay + adv_block
 
-                # Adversary group relay revenue: adv_idx plus all pseudonyms.
-                adv_relay = float(rev[adv_idx] + rev[num_honest:].sum())
+                    f_cost = x * fee_fraction * f0
+                    gross_rate = (u - f_cost - f0) / f0
 
-                # Block-generator share: 50% of all fees, uniformly split
-                # across honest nodes only (pseudonyms cannot mine because
-                # they cannot contribute hashing power, §8.2).
-                total_fees = num_honest * f0 + x * fee_fraction * f0
-                block_pool = (1 - relay_share) * total_fees
-                adv_block = block_pool / num_honest
-                u = adv_relay + adv_block
+                    profit_rate = gross_rate - baseline_rate
 
-                # Adversary's out-of-pocket cost: x * y * f0 for the
-                # pseudonymous transactions, per §8.2. The adversary's own
-                # honest transaction fee f0 is already counted in the
-                # baseline subtraction below.
-                f_cost = x * fee_fraction * f0
-                gross_rate = (u - f_cost - f0) / f0  # -f0 for adv's own tx
-
-                # Extra profit above the no-attack baseline of the same node.
-                profit_rate = gross_rate - baseline_rate
-
-                records.append(SybilRecord(
-                    adversary_tier=adv_tier,
-                    pseudonym_count=int(x),
-                    profit_rate=float(profit_rate),
-                ))
+                    records.append(SybilRecord(
+                        substrate=substrate_name,
+                        adversary_tier=adv_tier,
+                        pseudonym_count=int(x),
+                        profit_rate=float(profit_rate),
+                    ))
     return records
 
 
