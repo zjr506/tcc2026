@@ -44,41 +44,7 @@ forwards arrive after downstream peers have already received the
 transaction via a faster route. The relay share is set to 50% of f0,
 and the profit rate (u − f) / f0 is averaged over 5 random seeds.
 
-Fig. 5(a) shows the profit rate against the number of links per tier on
-the Holme-Kim topology. Within every tier, the profit rate increases
-monotonically in the number of links, preserving the key result of
-Fig. 2(a). The curves separate by tier because a proportion-0.40 node
-cannot deliver all the sufficient forwards its topological position would
-entitle it to, so only the first 250 are credited. Algorithm 2 makes no
-reference to any resource attribute; the separation is entirely due to
-physical capacity ceilings. The per-tier mean unit revenues are 7.047,
-6.877, 6.934, and 7.087 × 10⁻⁵ for proportions 0.40, 0.30, 0.20, and
-0.10, respectively, all within 3.2% of each other. Algorithm 2 pays
-every node the same rate per forward regardless of tier; the only
-difference is how many forwards each node can physically deliver.
-
-Fig. 5(b) confirms this by showing the sufficient forwarding times per
-tier. Proportion-0.40 nodes saturate at their capacity of 250,
-proportion-0.30 nodes at 1000, while proportion-0.10 nodes continue to
-grow with degree. The higher local clustering of the Holme-Kim graph does
-not alter the saturation pattern, because Algorithm 1 reduces the graph
-to a BFS tree in which local triangles are pruned before incentive
-allocation.
-
-Fig. 5(c) shows the Sybil attack result with the adversary drawn from
-each tier on a 300-node Holme-Kim substrate. In each of 3 seeds, one
-adversary from every tier creates x ∈ {0, 5, 10, 20, 30, 50}
-pseudonymous nodes forming a clique, with each pseudonymous transaction
-paying 0.1 f0. Every curve stays at or below zero for all x, confirming
-that the attack is unprofitable regardless of the adversary's resources.
-The proportion-0.40 adversary suffers the steepest loss (−3.01 at
-x = 50) because its capacity is already saturated by honest traffic, so
-pseudonymous transactions displace its own relay revenue. The
-proportion-0.10 adversary sees the smallest penalty (−1.96 at x = 50).
-Heterogeneity does not open a new exploitable seam; capacity-bounded
-adversaries find the attack harder, not easier.
-
-Fig. 5(d) compares the per-tier profit rate across three topology
+Fig. 5(a) compares the per-tier profit rate across three topology
 models: the Holme-Kim power-law cluster graph, the algorithm of Doar
 ("A better model for generating test networks," IEEE GLOBECOM, 1996)
 used in Section 8.1, and the Watts-Strogatz small-world graph (Watts
@@ -94,8 +60,41 @@ proportion-0.10 tier yields −0.23, −0.16, and −0.00, respectively. The
 per-tier ordering is consistent across all three topologies, with
 higher-capacity tiers achieving higher profit rates. This confirms that
 the ITFC incentive structure is not sensitive to the choice of topology
-model: the fairness properties demonstrated in (a) and (b) on the
-Holme-Kim graph hold equally on the Doar and Watts-Strogatz graphs.
+model.
+
+Fig. 5(b) shows the profit rate against the number of links per tier on
+the Holme-Kim topology. Within every tier, the profit rate increases
+monotonically in the number of links, preserving the key result of
+Fig. 2(a). The curves separate by tier because a proportion-0.40 node
+cannot deliver all the sufficient forwards its topological position would
+entitle it to, so only the first 250 are credited. Algorithm 2 makes no
+reference to any resource attribute; the separation is entirely due to
+physical capacity ceilings. The per-tier mean unit revenues are 7.047,
+6.877, 6.934, and 7.087 × 10⁻⁵ for proportions 0.40, 0.30, 0.20, and
+0.10, respectively, all within 3.2% of each other. Algorithm 2 pays
+every node the same rate per forward regardless of tier; the only
+difference is how many forwards each node can physically deliver.
+
+Fig. 5(c) confirms this by showing the sufficient forwarding times per
+tier. Proportion-0.40 nodes saturate at their capacity of 250,
+proportion-0.30 nodes at 1000, while proportion-0.10 nodes continue to
+grow with degree. The higher local clustering of the Holme-Kim graph does
+not alter the saturation pattern, because Algorithm 1 reduces the graph
+to a BFS tree in which local triangles are pruned before incentive
+allocation.
+
+Fig. 5(d) shows the Sybil attack result with the adversary drawn from
+each tier on a 300-node Holme-Kim substrate. In each of 3 seeds, one
+adversary from every tier creates x ∈ {0, 5, 10, 20, 30, 50}
+pseudonymous nodes forming a clique, with each pseudonymous transaction
+paying 0.1 f0. Every curve stays at or below zero for all x, confirming
+that the attack is unprofitable regardless of the adversary's resources.
+The proportion-0.40 adversary suffers the steepest loss (−3.01 at
+x = 50) because its capacity is already saturated by honest traffic, so
+pseudonymous transactions displace its own relay revenue. The
+proportion-0.10 adversary sees the smallest penalty (−1.96 at x = 50).
+Heterogeneity does not open a new exploitable seam; capacity-bounded
+adversaries find the attack harder, not easier.
 
 We conclude that the fairness and attack-resistance guarantees of
 Sections 8.1 and 8.2 extend to heterogeneous cloud node populations

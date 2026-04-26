@@ -2,13 +2,13 @@
 Render Fig. 5 (2x2 grid) for Section 8.4 of main.pdf from the raw
 results produced by `python3 -m simulation.experiment_8_4`.
 
-  (a) Per-tier profit rate vs. number of links       — Holme-Kim
-  (b) Per-tier sufficient forwarding count vs. links  — Holme-Kim
-  (c) Per-tier Sybil-attack profit rate vs. pseudonyms — Holme-Kim
-  (d) Mean profit rate by topology: Holme-Kim, Doar, Watts-Strogatz
+  (a) Per-tier profit rate by topology: Holme-Kim, Doar, Watts-Strogatz
+  (b) Per-tier profit rate vs. number of links       — Holme-Kim
+  (c) Per-tier sufficient forwarding count vs. links  — Holme-Kim
+  (d) Per-tier Sybil-attack profit rate vs. pseudonyms — Holme-Kim
 
-Subfigures (a)-(c) use tier proportion labels (0.40, 0.30, 0.20, 0.10).
-Subfigure (d) uses topology name labels (Holme-Kim, Doar, Watts-Strogatz).
+Subfigure (a) uses topology name labels (Holme-Kim, Doar, Watts-Strogatz).
+Subfigures (b)-(d) use tier proportion labels (0.40, 0.30, 0.20, 0.10).
 
 Run:
     python3 -m simulation.plot_fig5
@@ -73,101 +73,10 @@ def _load(results_dir: str) -> Tuple[List[dict], List[dict]]:
 
 
 # -----------------------------------------------------------------------
-# (a) Per-tier profit rate vs links — Holme-Kim only
+# (a) Per-tier profit rate by topology (grouped bar chart)
 # -----------------------------------------------------------------------
 
 def _plot_subfig_a(ax: plt.Axes, fairness: List[dict]) -> None:
-    subset = [r for r in fairness if r.get("topology", "HK") == "HK"]
-    grouped = _bin_by_degree_per_tier(subset, "profit_rate", DEGREE_BINS)
-    for tier in TIERS:
-        x, y, se = grouped[tier]
-        valid = ~np.isnan(y)
-        ax.errorbar(
-            x[valid], y[valid], yerr=se[valid],
-            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2, label=tier,
-        )
-
-    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
-    ax.set_xlabel("Number of Links")
-    ax.set_ylabel("Profit Rate")
-    ax.set_title("Holme-Kim", fontsize=9)
-    ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
-    ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
-            ha="center", va="top", fontsize=10)
-
-
-# -----------------------------------------------------------------------
-# (b) Per-tier sufficient forwarding count vs links — Holme-Kim only
-# -----------------------------------------------------------------------
-
-def _plot_subfig_b(ax: plt.Axes, fairness: List[dict]) -> None:
-    subset = [r for r in fairness if r.get("topology", "HK") == "HK"]
-    grouped = _bin_by_degree_per_tier(subset, "forwards", DEGREE_BINS)
-    for tier in TIERS:
-        x, y, se = grouped[tier]
-        valid = ~np.isnan(y)
-        ax.errorbar(
-            x[valid], y[valid] / 1e3, yerr=se[valid] / 1e3,
-            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2, label=tier,
-        )
-
-    ax.set_xlabel("Number of Links")
-    ax.set_ylabel(r"Sufficient Forwarding Times ($\times 10^3$)")
-    ax.set_title("Holme-Kim", fontsize=9)
-    ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
-    ax.text(0.5, -0.23, "(b)", transform=ax.transAxes,
-            ha="center", va="top", fontsize=10)
-
-
-# -----------------------------------------------------------------------
-# (c) Per-tier Sybil profit rate vs pseudonyms — Holme-Kim only
-# -----------------------------------------------------------------------
-
-def _plot_subfig_c(ax: plt.Axes, sybil: List[dict]) -> None:
-    subset = [r for r in sybil if r.get("substrate", "HK") == "HK"]
-    xs = sorted({r["pseudonym_count"] for r in subset})
-
-    agg: Dict[Tuple[str, int], List[float]] = defaultdict(list)
-    for r in subset:
-        agg[(r["adversary_tier"], r["pseudonym_count"])].append(r["profit_rate"])
-
-    for tier in TIERS:
-        means = []
-        sems = []
-        for x in xs:
-            vals = agg[(tier, x)]
-            if vals:
-                means.append(np.mean(vals))
-                sems.append(np.std(vals, ddof=1) / np.sqrt(len(vals))
-                           if len(vals) > 1 else 0.0)
-            else:
-                means.append(np.nan)
-                sems.append(0.0)
-        ax.errorbar(
-            xs, np.array(means), yerr=sems,
-            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
-            markersize=5, linewidth=1.4, capsize=2, label=tier,
-        )
-
-    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
-    ax.set_xlabel("Number of Pseudonymous Nodes")
-    ax.set_ylabel("Profit Rate")
-    ax.set_title("Holme-Kim", fontsize=9)
-    ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="lower left", framealpha=0.9)
-    ax.text(0.5, -0.23, "(c)", transform=ax.transAxes,
-            ha="center", va="top", fontsize=10)
-
-
-# -----------------------------------------------------------------------
-# (d) Per-tier profit rate by topology (grouped bar chart)
-# -----------------------------------------------------------------------
-
-def _plot_subfig_d(ax: plt.Axes, fairness: List[dict]) -> None:
     topo_order = ["HK", "Doar", "WS"]
     topo_labels = [TOPO_KEY_TO_LABEL[k] for k in topo_order]
     n_topo = len(topo_order)
@@ -199,6 +108,97 @@ def _plot_subfig_d(ax: plt.Axes, fairness: List[dict]) -> None:
     ax.set_ylabel("Profit Rate")
     ax.grid(alpha=0.3, axis="y")
     ax.legend(fontsize=7.5, loc="upper left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
+
+
+# -----------------------------------------------------------------------
+# (b) Per-tier profit rate vs links — Holme-Kim only
+# -----------------------------------------------------------------------
+
+def _plot_subfig_b(ax: plt.Axes, fairness: List[dict]) -> None:
+    subset = [r for r in fairness if r.get("topology", "HK") == "HK"]
+    grouped = _bin_by_degree_per_tier(subset, "profit_rate", DEGREE_BINS)
+    for tier in TIERS:
+        x, y, se = grouped[tier]
+        valid = ~np.isnan(y)
+        ax.errorbar(
+            x[valid], y[valid], yerr=se[valid],
+            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
+        )
+
+    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
+    ax.set_xlabel("Number of Links")
+    ax.set_ylabel("Profit Rate")
+    ax.set_title("Holme-Kim", fontsize=9)
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(b)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
+
+
+# -----------------------------------------------------------------------
+# (c) Per-tier sufficient forwarding count vs links — Holme-Kim only
+# -----------------------------------------------------------------------
+
+def _plot_subfig_c(ax: plt.Axes, fairness: List[dict]) -> None:
+    subset = [r for r in fairness if r.get("topology", "HK") == "HK"]
+    grouped = _bin_by_degree_per_tier(subset, "forwards", DEGREE_BINS)
+    for tier in TIERS:
+        x, y, se = grouped[tier]
+        valid = ~np.isnan(y)
+        ax.errorbar(
+            x[valid], y[valid] / 1e3, yerr=se[valid] / 1e3,
+            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
+        )
+
+    ax.set_xlabel("Number of Links")
+    ax.set_ylabel(r"Sufficient Forwarding Times ($\times 10^3$)")
+    ax.set_title("Holme-Kim", fontsize=9)
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8, loc="upper left", framealpha=0.9)
+    ax.text(0.5, -0.23, "(c)", transform=ax.transAxes,
+            ha="center", va="top", fontsize=10)
+
+
+# -----------------------------------------------------------------------
+# (d) Per-tier Sybil profit rate vs pseudonyms — Holme-Kim only
+# -----------------------------------------------------------------------
+
+def _plot_subfig_d(ax: plt.Axes, sybil: List[dict]) -> None:
+    subset = [r for r in sybil if r.get("substrate", "HK") == "HK"]
+    xs = sorted({r["pseudonym_count"] for r in subset})
+
+    agg: Dict[Tuple[str, int], List[float]] = defaultdict(list)
+    for r in subset:
+        agg[(r["adversary_tier"], r["pseudonym_count"])].append(r["profit_rate"])
+
+    for tier in TIERS:
+        means = []
+        sems = []
+        for x in xs:
+            vals = agg[(tier, x)]
+            if vals:
+                means.append(np.mean(vals))
+                sems.append(np.std(vals, ddof=1) / np.sqrt(len(vals))
+                           if len(vals) > 1 else 0.0)
+            else:
+                means.append(np.nan)
+                sems.append(0.0)
+        ax.errorbar(
+            xs, np.array(means), yerr=sems,
+            color=TIER_COLORS[tier], marker=TIER_MARKERS[tier],
+            markersize=5, linewidth=1.4, capsize=2, label=tier,
+        )
+
+    ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
+    ax.set_xlabel("Number of Pseudonymous Nodes")
+    ax.set_ylabel("Profit Rate")
+    ax.set_title("Holme-Kim", fontsize=9)
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8, loc="lower left", framealpha=0.9)
     ax.text(0.5, -0.23, "(d)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
@@ -218,8 +218,8 @@ def main() -> None:
     fig, axes = plt.subplots(2, 2, figsize=(9.5, 7.4))
     _plot_subfig_a(axes[0, 0], fairness)
     _plot_subfig_b(axes[0, 1], fairness)
-    _plot_subfig_c(axes[1, 0], sybil)
-    _plot_subfig_d(axes[1, 1], fairness)
+    _plot_subfig_c(axes[1, 0], fairness)
+    _plot_subfig_d(axes[1, 1], sybil)
     fig.tight_layout()
     fig.savefig(fig_path_pdf, bbox_inches="tight")
     fig.savefig(fig_path_png, bbox_inches="tight", dpi=160)
