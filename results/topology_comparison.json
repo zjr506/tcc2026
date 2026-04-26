@@ -1,6 +1,6 @@
 [
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 1000,
     "seed": 0,
     "mean_degree": 7.83,
@@ -9,7 +9,7 @@
     "approx_diameter": 5
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 1000,
     "seed": 1,
     "mean_degree": 7.896,
@@ -18,7 +18,7 @@
     "approx_diameter": 5
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 1000,
     "seed": 2,
     "mean_degree": 7.702,
@@ -54,7 +54,7 @@
     "approx_diameter": 5
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 2000,
     "seed": 0,
     "mean_degree": 7.558,
@@ -63,7 +63,7 @@
     "approx_diameter": 6
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 2000,
     "seed": 1,
     "mean_degree": 7.486,
@@ -72,7 +72,7 @@
     "approx_diameter": 5
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 2000,
     "seed": 2,
     "mean_degree": 7.66,
@@ -108,7 +108,7 @@
     "approx_diameter": 5
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 5000,
     "seed": 0,
     "mean_degree": 7.461,
@@ -117,7 +117,7 @@
     "approx_diameter": 6
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 5000,
     "seed": 1,
     "mean_degree": 7.4,
@@ -126,7 +126,7 @@
     "approx_diameter": 6
   },
   {
-    "topology": "BA",
+    "topology": "Doar",
     "num_nodes": 5000,
     "seed": 2,
     "mean_degree": 7.529,

@@ -54,19 +54,20 @@ def _load(results_dir: str) -> tuple:
 # ---------------------------------------------------------------------------
 
 def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
-    from collections import defaultdict
     by_topo: dict = defaultdict(list)
     for r in lv_size:
-        topo = r.get("topology", "BA")
+        topo = r.get("topology", "Doar")
         by_topo[topo].append(r)
 
     TOPO_STYLES = {
-        "BA": {"alg1": ("#1f77b4", "o", "-"),  "alg12": ("#d62728", "s", "-")},
-        "HK": {"alg1": ("#1f77b4", "^", "--"), "alg12": ("#d62728", "D", "--")},
+        "Doar": {"alg1": ("#1f77b4", "o", "-"),  "alg12": ("#d62728", "s", "-")},
+        "HK":   {"alg1": ("#1f77b4", "^", "--"), "alg12": ("#d62728", "D", "--")},
     }
 
-    for topo in ("BA", "HK"):
-        records = sorted(by_topo[topo], key=lambda r: r["num_nodes"])
+    for topo in ("Doar", "HK"):
+        records = sorted(by_topo.get(topo, []), key=lambda r: r["num_nodes"])
+        if not records:
+            continue
         xs = np.array([r["num_nodes"] for r in records], dtype=float)
         alg1 = np.array([r["alg1_ms"] for r in records], dtype=float)
         alg1_se = np.array([r["alg1_se_ms"] for r in records], dtype=float)
@@ -81,15 +82,15 @@ def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
                     linewidth=1.4, capsize=2, linestyle=ls12, color=c12,
                     label=f"Alg 1+2 ({topo})")
 
-    # Linear fit on BA Alg1+2 (reference line)
-    ba_records = sorted(by_topo["BA"], key=lambda r: r["num_nodes"])
-    xs_ba = np.array([r["num_nodes"] for r in ba_records], dtype=float)
-    alg12_ba = np.array([r["alg12_ms"] for r in ba_records], dtype=float)
-    slope = float(np.dot(xs_ba, alg12_ba) / np.dot(xs_ba, xs_ba))
-    x_fit = np.linspace(xs_ba.min(), xs_ba.max(), 200)
-    ax.plot(x_fit, slope * x_fit, linestyle=":", linewidth=1.0,
-            color="gray", alpha=0.7,
-            label=f"linear fit ({slope*1e3:.2f}×10⁻³ ms/node)")
+    doar_records = sorted(by_topo.get("Doar", []), key=lambda r: r["num_nodes"])
+    if doar_records:
+        xs_d = np.array([r["num_nodes"] for r in doar_records], dtype=float)
+        alg12_d = np.array([r["alg12_ms"] for r in doar_records], dtype=float)
+        slope = float(np.dot(xs_d, alg12_d) / np.dot(xs_d, xs_d))
+        x_fit = np.linspace(xs_d.min(), xs_d.max(), 200)
+        ax.plot(x_fit, slope * x_fit, linestyle=":", linewidth=1.0,
+                color="gray", alpha=0.7,
+                label=f"linear fit ({slope*1e3:.2f}×10⁻³ ms/node)")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Per-transaction latency (ms)")

@@ -95,9 +95,8 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
     """Holme-Kim power-law cluster graph (m=4, p=0.5).
-    Preserves scale-free degree distribution from Barabási–Albert while
-    adding realistic clustering (~0.26 vs BA's ~0.10), better approximating
-    the Bitcoin network's measured clustering coefficient of 0.1–0.3.
+    Adds realistic clustering (~0.22) while preserving scale-free
+    degree distribution and small-world diameter.
     """
     G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.5,
                                    seed=int(rng.integers(0, 2**31 - 1)))
@@ -175,7 +174,7 @@ def experiment_fairness(
     records: List[FairnessRecord] = []
     for seed in range(num_seeds):
         rng = np.random.default_rng(seed * 17 + 1)
-        adj = make_doar_like(num_nodes, rng)
+        adj = make_holme_kim(num_nodes, rng)
         tiers = assign_tiers(num_nodes, rng)
 
         sources = list(range(num_nodes))  # one tx per cloud node
@@ -220,9 +219,9 @@ def experiment_sybil(
     f0: float = 1.0,
     pseudonym_range: Sequence[int] = (0, 5, 10, 15, 20, 30, 40, 50),
 ) -> List[SybilRecord]:
-    """Sybil attack experiment for Fig 5(c).
+    """Sybil attack experiment for Fig 5(d).
 
-    Honest cloud nodes form a Watts-Strogatz substrate (matching §8.2).
+    Honest cloud nodes form a Holme-Kim substrate.
     A randomly chosen node from each tier is converted into the adversary
     and creates x pseudonymous nodes that form a clique with it. Each
     honest tx pays f0; each pseudonym tx pays fee_fraction * f0.
@@ -232,8 +231,8 @@ def experiment_sybil(
     for seed in range(num_seeds):
         rng = np.random.default_rng(seed * 31 + 7)
 
-        # Build the honest WS substrate once per seed.
-        adj_honest = make_watts_strogatz(num_honest, mean_degree, rng)
+        # Build the honest Holme-Kim substrate once per seed.
+        adj_honest = make_holme_kim(num_honest, rng)
         tiers_honest = assign_tiers(num_honest, rng)
         # Pick one representative adversary candidate of each tier.
         adv_idx_by_tier: Dict[str, int] = {}
@@ -321,7 +320,7 @@ def experiment_sybil(
 
 
 # ---------------------------------------------------------------------------
-# Topology comparison — how well do BA and HK match real cloud blockchain nets?
+# Topology comparison — structural properties of Doar-like vs Holme-Kim
 # ---------------------------------------------------------------------------
 
 def _graph_from_adj(adj: List[np.ndarray]) -> nx.Graph:
@@ -339,25 +338,17 @@ def topology_comparison(
     sizes: List[int] = (1000, 2000, 5000),
     num_seeds: int = 3,
 ) -> List[dict]:
-    """Measure structural properties of BA and HK topologies at several sizes.
-
-    Metrics: mean degree, degree standard deviation, global clustering
-    coefficient, and approximate diameter (BFS from 30 random sources,
-    take the max shortest-path tree depth as a lower bound).
-    Returns a list of dicts with keys:
-      topology, num_nodes, seed,
-      mean_degree, std_degree, clustering, approx_diameter
-    """
+    """Measure clustering, degree stats, and approximate diameter
+    for Doar-like and Holme-Kim topologies."""
     results = []
     for num_nodes in sizes:
-        for topo_name, topo_fn in (("BA", make_doar_like), ("HK", make_holme_kim)):
+        for topo_name, topo_fn in (("Doar", make_doar_like), ("HK", make_holme_kim)):
             for seed in range(num_seeds):
                 rng = np.random.default_rng(seed * 41 + 3 + num_nodes)
                 adj = topo_fn(num_nodes, rng)
                 G = _graph_from_adj(adj)
                 degrees = np.array([d for _, d in G.degree()], dtype=float)
                 clustering = nx.average_clustering(G)
-                # Approximate diameter: max of BFS depths from sample nodes.
                 sample = list(
                     np.random.default_rng(seed).choice(num_nodes, size=30, replace=False)
                 )
@@ -415,7 +406,7 @@ def main() -> None:
     with open(os.path.join(out_dir, "sybil.json"), "w") as fh:
         json.dump([asdict(r) for r in sybil], fh)
 
-    print("[experiment_8_4] running topology comparison (BA vs HK) ...")
+    print("[experiment_8_4] running topology comparison ...")
     topo_cmp = topology_comparison(sizes=[1000, 2000, 5000], num_seeds=3)
     with open(os.path.join(out_dir, "topology_comparison.json"), "w") as fh:
         json.dump(topo_cmp, fh, indent=2)

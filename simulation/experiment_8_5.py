@@ -56,11 +56,7 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 
 def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
-    """Holme-Kim power-law cluster graph with m=4 edges/node, p=0.5 triad prob.
-    Adds realistic clustering (~0.26) while preserving scale-free degree
-    distribution and diameter=5, better approximating real Bitcoin network
-    clustering of 0.1–0.3 compared to pure Barabási–Albert (~0.10).
-    """
+    """Holme-Kim power-law cluster graph (m=4, p=0.5)."""
     G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.5,
                                    seed=int(rng.integers(0, 2**31 - 1)))
     return _to_adj(G, num_nodes)
@@ -94,13 +90,14 @@ def _time_alg12(adj: List[np.ndarray], sources: List[int]) -> float:
 
 
 TOPOLOGY_GENERATORS = {
-    "BA": make_doar_like,
+    "Doar": make_doar_like,
     "HK": make_holme_kim,
 }
 
 
 def experiment_a1_latency_vs_size() -> List[dict]:
-    """Per-tx latency for Alg1 and Alg1+2 across network sizes, for BA and HK topologies.
+    """Per-tx latency for Alg1 and Alg1+2 across network sizes,
+    for Doar-like and Holme-Kim topologies.
 
     Returns a list of dicts with keys:
       topology, num_nodes, mean_edges,
