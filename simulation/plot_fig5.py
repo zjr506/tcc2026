@@ -107,7 +107,7 @@ def _plot_subfig_a(ax: plt.Axes, fairness: List[dict]) -> None:
     ax.axhline(0, color="k", linewidth=0.5, linestyle=":")
     ax.set_ylabel("Profit Rate")
     ax.grid(alpha=0.3, axis="y")
-    ax.legend(fontsize=7.5, loc="upper left", framealpha=0.9)
+    ax.legend(fontsize=7.5, loc="lower right", framealpha=0.9)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
