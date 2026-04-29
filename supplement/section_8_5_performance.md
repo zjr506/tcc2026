@@ -19,8 +19,8 @@ used in Section 8.1, we repeat the latency measurements on a second
 model: the Holme-Kim power-law cluster graph (Holme and Kim, "Growing
 scale-free networks with tunable clustering," Physical Review E, 2002).
 The Holme-Kim model extends preferential attachment with a
-triangle-formation step that raises the clustering coefficient to levels
-consistent with real cloud blockchain networks, as we explain below.
+triangle-formation step that produces both a scale-free degree
+distribution and significant local clustering, as we explain below.
 
 We generate test networks using the algorithm of Doar ("A better model
 for generating test networks," IEEE GLOBECOM, 1996), as in Section 8.1,
@@ -78,23 +78,19 @@ that the deployment performance overhead of ITFC is modest and well
 within the storage and computation capacities of the cloud nodes
 described in Section 3.
 
-The topology comparison also allows us to assess how closely each model
-approximates a real cloud blockchain network. According to Bitnodes
-("Global Bitcoin nodes distribution," 2025) the reachable Bitcoin network
-comprises roughly 22 000 nodes, and measurements by Franzoni et al.
-("ATOM: Active topology monitoring for the Bitcoin peer-to-peer network,"
-Peer-to-Peer Networking and Applications, 2022) and Essaid et al.
-("Characterizing the Bitcoin network topology with node-probe,"
-International Journal of Network Management, 2023) report an average
-clustering coefficient of 0.1 to 0.3 and a network diameter of 5 to 7
-hops. Our topology comparison experiment (measuring clustering over seeds
-at |V| = 1 000 to 5 000) finds that the Doar topology yields clustering
-of 0.004 to 0.024, well below the observed range, while the Holme-Kim
-topology yields 0.21 to 0.24, squarely within 0.1 to 0.3. Both models
-share a similar average degree (~8) and approximate diameter of 5 to 6
-hops, matching the Bitcoin network. The Holme-Kim model is therefore a
-closer structural proxy for real deployments. The fact that both models
-produce nearly identical latency slopes confirms that the O(|V|)
-performance guarantee is not sensitive to the level of local clustering,
-and the ITFC overhead figures reported above remain valid across the
-realistic range of cloud blockchain network topologies.
+The topology comparison also allows us to assess the structural
+properties of each model. According to Bitnodes ("Global Bitcoin nodes
+distribution," 2025) the reachable Bitcoin network comprises roughly
+22 000 nodes, and the Bitcoin protocol specifies a default of 8 outbound
+connections per node (Bitcoin.org, "P2P network guide," 2025). Our
+topology comparison experiment (measuring clustering over seeds at
+|V| = 1 000 to 5 000) finds that the Doar topology yields clustering of
+0.004 to 0.024, while the Holme-Kim topology yields 0.21 to 0.24. Both
+models share a similar average degree (~8), consistent with the protocol
+default, and an approximate diameter of 5 to 6 hops. The Holme-Kim
+model adds significant local clustering on top of the scale-free degree
+distribution, providing a complementary test topology to the Doar model.
+The fact that both models produce nearly identical latency slopes
+confirms that the O(|V|) performance guarantee is not sensitive to the
+level of local clustering, and the ITFC overhead figures reported above
+remain valid across topologies with different clustering properties.

@@ -21,17 +21,19 @@ The Holme-Kim model generates networks by combining preferential
 attachment with a triangle-formation step: after each new node attaches
 to m existing nodes, an additional edge is formed to a neighbor of the
 most recently chosen target with probability p. This process produces
-both a scale-free degree distribution and realistic local clustering.
-With m = 4 and p = 0.5, the resulting graphs exhibit a clustering
-coefficient of 0.21 to 0.24 and a diameter of 5 to 6 hops. These
-values are consistent with measurements of the Bitcoin peer-to-peer
-network, which report a clustering coefficient of 0.1 to 0.3 and a
-diameter of 5 to 7 hops (Franzoni et al., "ATOM: Active topology
-monitoring for the Bitcoin peer-to-peer network," Peer-to-Peer
-Networking and Applications, 2022; Essaid et al., "Characterizing the
-Bitcoin network topology with node-probe," International Journal of
-Network Management, 2023). The Holme-Kim model therefore provides a
-structurally representative test network for the experiments below.
+both a scale-free degree distribution and significant local clustering,
+two properties that coexist in many real peer-to-peer networks but are
+not jointly captured by the Barabási-Albert model or the Watts-Strogatz
+model alone. With m = 4 and p = 0.5, the resulting graphs exhibit a
+clustering coefficient of 0.21 to 0.24, an average degree of
+approximately 8, and a diameter of 5 to 6 hops. The average degree is
+consistent with the Bitcoin protocol's default of 8 outbound connections
+per node (Bitcoin.org, "P2P network guide," 2025), and the network
+comprises approximately 22 000 reachable nodes (Bitnodes, "Global
+Bitcoin nodes distribution," 2025). The Holme-Kim model therefore
+provides a structurally representative test network for the experiments
+below, complementing the Doar topology of Section 8.1 and the
+Watts-Strogatz topology of Section 8.2.
 
 We assign each of the 2000 cloud nodes to one of four resource tiers
 with population proportions 0.40, 0.30, 0.20, and 0.10, linearly spaced
@@ -98,5 +100,6 @@ adversaries find the attack harder, not easier.
 
 We conclude that the fairness and attack-resistance guarantees of
 Sections 8.1 and 8.2 extend to heterogeneous cloud node populations
-under multiple network topologies, including the Holme-Kim model whose
-clustering properties are consistent with real cloud blockchain networks.
+under multiple network topologies, including the Holme-Kim model which
+combines scale-free degree distribution with significant local
+clustering.
