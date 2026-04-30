@@ -1,0 +1,168 @@
+{
+  "vs_nodes": [
+    {
+      "num_nodes": 500,
+      "alloc_kb": 13.6719,
+      "topology_kb_per_block": 0.3972,
+      "total_kb_per_block": 14.0691
+    },
+    {
+      "num_nodes": 1000,
+      "alloc_kb": 27.3438,
+      "topology_kb_per_block": 0.7976,
+      "total_kb_per_block": 28.1413
+    },
+    {
+      "num_nodes": 2000,
+      "alloc_kb": 54.6875,
+      "topology_kb_per_block": 1.5984,
+      "total_kb_per_block": 56.2859
+    },
+    {
+      "num_nodes": 5000,
+      "alloc_kb": 136.7188,
+      "topology_kb_per_block": 4.0007,
+      "total_kb_per_block": 140.7195
+    },
+    {
+      "num_nodes": 10000,
+      "alloc_kb": 273.4375,
+      "topology_kb_per_block": 8.0046,
+      "total_kb_per_block": 281.4421
+    },
+    {
+      "num_nodes": 22000,
+      "alloc_kb": 601.5625,
+      "topology_kb_per_block": 17.614,
+      "total_kb_per_block": 619.1765
+    },
+    {
+      "num_nodes": 50000,
+      "alloc_kb": 1367.1875,
+      "topology_kb_per_block": 40.0359,
+      "total_kb_per_block": 1407.2234
+    }
+  ],
+  "cumulative": [
+    {
+      "num_nodes": 5000,
+      "num_blocks": 1,
+      "cumulative_mb": 0.137421
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 10,
+      "cumulative_mb": 1.374213
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 50,
+      "cumulative_mb": 6.871067
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 100,
+      "cumulative_mb": 13.742134
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 500,
+      "cumulative_mb": 68.71067
+    },
+    {
+      "num_nodes": 5000,
+      "num_blocks": 1000,
+      "cumulative_mb": 137.421341
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 1,
+      "cumulative_mb": 0.274846
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 10,
+      "cumulative_mb": 2.748458
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 50,
+      "cumulative_mb": 13.74229
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 100,
+      "cumulative_mb": 27.484581
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 500,
+      "cumulative_mb": 137.422905
+    },
+    {
+      "num_nodes": 10000,
+      "num_blocks": 1000,
+      "cumulative_mb": 274.84581
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 1,
+      "cumulative_mb": 0.604665
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 10,
+      "cumulative_mb": 6.046645
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 50,
+      "cumulative_mb": 30.233227
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 100,
+      "cumulative_mb": 60.466454
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 500,
+      "cumulative_mb": 302.332268
+    },
+    {
+      "num_nodes": 22000,
+      "num_blocks": 1000,
+      "cumulative_mb": 604.664536
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 1,
+      "cumulative_mb": 1.374242
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 10,
+      "cumulative_mb": 13.742416
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 50,
+      "cumulative_mb": 68.712078
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 100,
+      "cumulative_mb": 137.424156
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 500,
+      "cumulative_mb": 687.120781
+    },
+    {
+      "num_nodes": 50000,
+      "num_blocks": 1000,
+      "cumulative_mb": 1374.241562
+    }
+  ]
+}

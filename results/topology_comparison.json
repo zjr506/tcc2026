@@ -1,0 +1,245 @@
+[
+  {
+    "topology": "Doar",
+    "num_nodes": 1000,
+    "seed": 0,
+    "mean_degree": 7.83,
+    "std_degree": 7.464,
+    "clustering": 0.0245,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 1000,
+    "seed": 1,
+    "mean_degree": 7.896,
+    "std_degree": 7.392,
+    "clustering": 0.0226,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 1000,
+    "seed": 2,
+    "mean_degree": 7.702,
+    "std_degree": 6.828,
+    "clustering": 0.0224,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 1000,
+    "seed": 0,
+    "mean_degree": 7.96,
+    "std_degree": 8.789,
+    "clustering": 0.072,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 1000,
+    "seed": 1,
+    "mean_degree": 7.96,
+    "std_degree": 8.867,
+    "clustering": 0.0794,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 1000,
+    "seed": 2,
+    "mean_degree": 7.966,
+    "std_degree": 9.045,
+    "clustering": 0.0794,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.845,
+    "clustering": 0.4785,
+    "approx_diameter": 8
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.831,
+    "clustering": 0.473,
+    "approx_diameter": 8
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 1000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.867,
+    "clustering": 0.484,
+    "approx_diameter": 8
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 2000,
+    "seed": 0,
+    "mean_degree": 7.558,
+    "std_degree": 6.915,
+    "clustering": 0.0098,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 2000,
+    "seed": 1,
+    "mean_degree": 7.486,
+    "std_degree": 7.05,
+    "clustering": 0.0108,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 2000,
+    "seed": 2,
+    "mean_degree": 7.66,
+    "std_degree": 7.126,
+    "clustering": 0.0111,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 2000,
+    "seed": 0,
+    "mean_degree": 7.982,
+    "std_degree": 9.422,
+    "clustering": 0.0689,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 2000,
+    "seed": 1,
+    "mean_degree": 7.982,
+    "std_degree": 8.631,
+    "clustering": 0.0606,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 2000,
+    "seed": 2,
+    "mean_degree": 7.979,
+    "std_degree": 9.017,
+    "clustering": 0.0651,
+    "approx_diameter": 5
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.861,
+    "clustering": 0.4737,
+    "approx_diameter": 9
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.882,
+    "clustering": 0.4737,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 2000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.876,
+    "clustering": 0.4763,
+    "approx_diameter": 9
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 5000,
+    "seed": 0,
+    "mean_degree": 7.461,
+    "std_degree": 6.957,
+    "clustering": 0.0036,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 5000,
+    "seed": 1,
+    "mean_degree": 7.4,
+    "std_degree": 6.741,
+    "clustering": 0.0041,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "Doar",
+    "num_nodes": 5000,
+    "seed": 2,
+    "mean_degree": 7.529,
+    "std_degree": 6.917,
+    "clustering": 0.0039,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 5000,
+    "seed": 0,
+    "mean_degree": 7.992,
+    "std_degree": 11.086,
+    "clustering": 0.0598,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 5000,
+    "seed": 1,
+    "mean_degree": 7.992,
+    "std_degree": 9.955,
+    "clustering": 0.0576,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "HK",
+    "num_nodes": 5000,
+    "seed": 2,
+    "mean_degree": 7.993,
+    "std_degree": 10.097,
+    "clustering": 0.0554,
+    "approx_diameter": 6
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 0,
+    "mean_degree": 8.0,
+    "std_degree": 0.889,
+    "clustering": 0.47,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 1,
+    "mean_degree": 8.0,
+    "std_degree": 0.869,
+    "clustering": 0.4773,
+    "approx_diameter": 10
+  },
+  {
+    "topology": "WS",
+    "num_nodes": 5000,
+    "seed": 2,
+    "mean_degree": 8.0,
+    "std_degree": 0.875,
+    "clustering": 0.4778,
+    "approx_diameter": 10
+  }
+]
