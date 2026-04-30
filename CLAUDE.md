@@ -138,5 +138,5 @@ New references added in supplement:
 
 ## Git Branches
 
-- `main`: primary branch, all work merged here
-- `claude/cloud-incentive-simulation-gty0f`: feature branch, kept in sync with main
+- `main`: primary branch, all work merged here — **active development branch**
+- `claude/recover-previous-work-RusgC`: merged into main; retired
