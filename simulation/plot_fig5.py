@@ -40,7 +40,7 @@ TIER_MARKERS = {"0.40": "o", "0.30": "s", "0.20": "^", "0.10": "D"}
 TOPO_KEY_TO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
 TOPO_COLORS = {"Holme-Kim": "#1f77b4", "Doar": "#d62728", "Watts-Strogatz": "#2ca02c"}
 
-DEGREE_BINS = [4, 8, 12, 16, 20, 25, 30, 35, 40, 45, 50, 55, 61]
+DEGREE_BINS = [4, 8, 12, 16, 20, 25, 30, 35, 40, 55]
 
 
 def _bin_by_degree_per_tier(
