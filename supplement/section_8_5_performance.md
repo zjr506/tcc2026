@@ -82,15 +82,22 @@ The topology comparison also allows us to assess the structural
 properties of each model. According to Bitnodes ("Global Bitcoin nodes
 distribution," 2025) the reachable Bitcoin network comprises roughly
 22 000 nodes, and the Bitcoin protocol specifies a default of 8 outbound
-connections per node (Bitcoin.org, "P2P network guide," 2025). Our
-topology comparison experiment (measuring clustering over seeds at
-|V| = 1 000 to 5 000) finds that the Doar topology yields clustering of
-0.004 to 0.024, while the Holme-Kim topology yields 0.21 to 0.24. Both
-models share a similar average degree (~8), consistent with the protocol
-default, and an approximate diameter of 5 to 6 hops. The Holme-Kim
-model adds significant local clustering on top of the scale-free degree
-distribution, providing a complementary test topology to the Doar model.
-The fact that both models produce nearly identical latency slopes
-confirms that the O(|V|) performance guarantee is not sensitive to the
-level of local clustering, and the ITFC overhead figures reported above
-remain valid across topologies with different clustering properties.
+connections per node (Bitcoin.org, "P2P network guide," 2025).
+Measurements of the Bitcoin mainnet report an average clustering
+coefficient of 0.068 and a network diameter of 6 hops (Essaid and Ju,
+"Deep learning-based community detection approach on Bitcoin network,"
+Systems, 2022). Our topology comparison experiment (measuring clustering
+over seeds at |V| = 1 000 to 5 000) finds that the Doar topology yields
+clustering of 0.004 to 0.024, while the Holme-Kim topology yields 0.21
+to 0.24. The measured Bitcoin clustering (0.068) falls between the two
+models, and both share a similar average degree (~8) and approximate
+diameter of 5 to 6 hops, consistent with the measured values. The
+Holme-Kim model provides a conservative test by overestimating
+clustering relative to the real network: if the ITFC overhead is
+acceptable under elevated clustering, it is also acceptable under the
+lower clustering of the Bitcoin mainnet. The fact that both models
+produce nearly identical latency slopes confirms that the O(|V|)
+performance guarantee is not sensitive to the level of local clustering,
+and the ITFC overhead figures reported above remain valid across the
+range from Doar clustering (0.01) through Bitcoin clustering (0.07) to
+Holme-Kim clustering (0.22).

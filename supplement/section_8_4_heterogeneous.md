@@ -26,14 +26,21 @@ two properties that coexist in many real peer-to-peer networks but are
 not jointly captured by the Barabási-Albert model or the Watts-Strogatz
 model alone. With m = 4 and p = 0.5, the resulting graphs exhibit a
 clustering coefficient of 0.21 to 0.24, an average degree of
-approximately 8, and a diameter of 5 to 6 hops. The average degree is
-consistent with the Bitcoin protocol's default of 8 outbound connections
-per node (Bitcoin.org, "P2P network guide," 2025), and the network
-comprises approximately 22 000 reachable nodes (Bitnodes, "Global
-Bitcoin nodes distribution," 2025). The Holme-Kim model therefore
-provides a structurally representative test network for the experiments
-below, complementing the Doar topology of Section 8.1 and the
-Watts-Strogatz topology of Section 8.2.
+approximately 8, and a diameter of 5 to 6 hops. Measurements of the
+Bitcoin peer-to-peer network report an average clustering coefficient of
+0.068 on the mainnet and a network diameter of 6 hops (Essaid and Ju,
+"Deep learning-based community detection approach on Bitcoin network,"
+Systems, 2022), with the Bitcoin protocol specifying a default of 8
+outbound connections per node (Bitcoin.org, "P2P network guide," 2025)
+and approximately 22 000 reachable nodes (Bitnodes, "Global Bitcoin
+nodes distribution," 2025). The Holme-Kim model matches the diameter
+and average degree of the Bitcoin network while producing higher
+clustering (0.22 vs. 0.068), providing a conservative test: if ITFC
+fairness holds under elevated clustering, it also holds under the lower
+clustering of the real network. The Doar topology of Section 8.1
+(clustering 0.004 to 0.024) and the Watts-Strogatz topology of
+Section 8.2 bracket the measured Bitcoin clustering from below, so the
+three models together span a wide range of clustering levels.
 
 We assign each of the 2000 cloud nodes to one of four resource tiers
 with population proportions 0.40, 0.30, 0.20, and 0.10, linearly spaced
