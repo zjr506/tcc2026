@@ -21,26 +21,22 @@ The Holme-Kim model generates networks by combining preferential
 attachment with a triangle-formation step: after each new node attaches
 to m existing nodes, an additional edge is formed to a neighbor of the
 most recently chosen target with probability p. This process produces
-both a scale-free degree distribution and significant local clustering,
-two properties that coexist in many real peer-to-peer networks but are
-not jointly captured by the Barabási-Albert model or the Watts-Strogatz
-model alone. With m = 4 and p = 0.5, the resulting graphs exhibit a
-clustering coefficient of 0.21 to 0.24, an average degree of
-approximately 8, and a diameter of 5 to 6 hops. Measurements of the
-Bitcoin peer-to-peer network report an average clustering coefficient of
-0.068 on the mainnet and a network diameter of 6 hops (Essaid and Ju,
-"Deep learning-based community detection approach on Bitcoin network,"
-Systems, 2022), with the Bitcoin protocol specifying a default of 8
-outbound connections per node (Bitcoin.org, "P2P network guide," 2025)
-and approximately 22 000 reachable nodes (Bitnodes, "Global Bitcoin
-nodes distribution," 2025). The Holme-Kim model matches the diameter
-and average degree of the Bitcoin network while producing higher
-clustering (0.22 vs. 0.068), providing a conservative test: if ITFC
-fairness holds under elevated clustering, it also holds under the lower
-clustering of the real network. The Doar topology of Section 8.1
-(clustering 0.004 to 0.024) and the Watts-Strogatz topology of
-Section 8.2 bracket the measured Bitcoin clustering from below, so the
-three models together span a wide range of clustering levels.
+both a scale-free degree distribution and tunable local clustering.
+Measurements of the Bitcoin peer-to-peer network report an average
+clustering coefficient of 0.068 on the mainnet and a network diameter
+of 6 hops (Essaid and Ju, "Deep learning-based community detection
+approach on Bitcoin network," Systems, 2022), with the Bitcoin protocol
+specifying a default of 8 outbound connections per node (Bitcoin.org,
+"P2P network guide," 2025) and approximately 22 000 reachable nodes
+(Bitnodes, "Global Bitcoin nodes distribution," 2025). With m = 4 and
+p = 0.12, the resulting graphs exhibit a clustering coefficient of
+0.061 to 0.069, an average degree of approximately 8, and a diameter
+of 5 to 6 hops, directly matching the measured Bitcoin mainnet
+properties. The Doar topology of Section 8.1 (clustering 0.004 to
+0.024) provides a complementary test with sparser local structure,
+while the Watts-Strogatz topology of Section 8.2 exercises a narrow
+degree distribution in contrast to the scale-free distribution of the
+Holme-Kim model.
 
 We assign each of the 2000 cloud nodes to one of four resource tiers
 with population proportions 0.40, 0.30, 0.20, and 0.10, linearly spaced
@@ -65,7 +61,7 @@ grouped bars show the mean profit rate for each tier on each topology.
 Within every tier, the three topologies produce closely matched profit
 rates: for example, the proportion-0.40 tier yields −0.48 on
 Holme-Kim, −0.48 on Doar, and −0.47 on Watts-Strogatz, while the
-proportion-0.10 tier yields −0.23, −0.16, and −0.00, respectively. The
+proportion-0.10 tier yields −0.21, −0.16, and −0.00, respectively. The
 per-tier ordering is consistent across all three topologies, with
 higher-capacity tiers achieving higher profit rates. This confirms that
 the ITFC incentive structure is not sensitive to the choice of topology
@@ -78,16 +74,16 @@ Fig. 2(a). The curves separate by tier because a proportion-0.40 node
 cannot deliver all the sufficient forwards its topological position would
 entitle it to, so only the first 250 are credited. Algorithm 2 makes no
 reference to any resource attribute; the separation is entirely due to
-physical capacity ceilings. The per-tier mean unit revenues are 7.047,
-6.877, 6.934, and 7.087 × 10⁻⁵ for proportions 0.40, 0.30, 0.20, and
-0.10, respectively, all within 3.2% of each other. Algorithm 2 pays
+physical capacity ceilings. The per-tier mean unit revenues are 7.288,
+7.351, 7.378, and 7.281 × 10⁻⁵ for proportions 0.40, 0.30, 0.20, and
+0.10, respectively, all within 1.3% of each other. Algorithm 2 pays
 every node the same rate per forward regardless of tier; the only
 difference is how many forwards each node can physically deliver.
 
 Fig. 5(c) confirms this by showing the sufficient forwarding times per
 tier. Proportion-0.40 nodes saturate at their capacity of 250,
 proportion-0.30 nodes at 1000, while proportion-0.10 nodes continue to
-grow with degree. The higher local clustering of the Holme-Kim graph does
+grow with degree. The local clustering of the Holme-Kim graph does
 not alter the saturation pattern, because Algorithm 1 reduces the graph
 to a BFS tree in which local triangles are pruned before incentive
 allocation.
@@ -98,15 +94,12 @@ adversary from every tier creates x ∈ {0, 5, 10, 20, 30, 50}
 pseudonymous nodes forming a clique, with each pseudonymous transaction
 paying 0.1 f0. Every curve stays at or below zero for all x, confirming
 that the attack is unprofitable regardless of the adversary's resources.
-The proportion-0.40 adversary suffers the steepest loss (−3.01 at
-x = 50) because its capacity is already saturated by honest traffic, so
-pseudonymous transactions displace its own relay revenue. The
-proportion-0.10 adversary sees the smallest penalty (−1.96 at x = 50).
-Heterogeneity does not open a new exploitable seam; capacity-bounded
+The proportion-0.30 adversary suffers the steepest loss (−2.71 at
+x = 50). The proportion-0.10 adversary sees the smallest penalty
+(−1.46 at x = 50). Heterogeneity does not open a new exploitable seam; capacity-bounded
 adversaries find the attack harder, not easier.
 
 We conclude that the fairness and attack-resistance guarantees of
 Sections 8.1 and 8.2 extend to heterogeneous cloud node populations
-under multiple network topologies, including the Holme-Kim model which
-combines scale-free degree distribution with significant local
-clustering.
+under multiple network topologies, including the Holme-Kim model tuned
+to match the measured clustering coefficient of the Bitcoin mainnet.

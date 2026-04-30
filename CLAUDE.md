@@ -42,7 +42,7 @@ results/
 
 ### Topology Models (in experiment_8_4.py)
 - **Doar** (`make_doar_like`): Barabási-Albert backbone with degree capped to [4, 60]. Used in main paper §8.1. Reference: Doar, IEEE GLOBECOM 1996 (ref [42] in main.pdf). Clustering: 0.004–0.024.
-- **Holme-Kim** (`make_holme_kim`): `nx.powerlaw_cluster_graph(n, 4, 0.5)`. Scale-free + triangle formation. Clustering: 0.21–0.24. Diameter: 5–6.
+- **Holme-Kim** (`make_holme_kim`): `nx.powerlaw_cluster_graph(n, 4, 0.12)`. Scale-free + tunable clustering. p=0.12 yields clustering 0.061–0.069, directly matching Bitcoin mainnet (0.068). Diameter: 5–6.
 - **Watts-Strogatz** (`make_watts_strogatz`): `nx.watts_strogatz_graph(n, k, 0.1)`. Used in main paper §8.2 (ref [43]). Narrow degree distribution.
 
 ### Four Resource Tiers (§8.4 heterogeneity model)
@@ -102,12 +102,12 @@ python3 -m simulation.plot_fig6   # -> results/fig6_section_8_5.{pdf,png}
 
 ### Fairness (fairness.json, 30,000 records)
 - Per-tier mean profit rates are similar across all 3 topologies (HK, Doar, WS)
-- HK per-tier unit revenues: 7.047, 6.877, 6.934, 7.087 × 10⁻⁵ (within 3.2%)
+- HK per-tier unit revenues: 7.288, 7.351, 7.378, 7.281 × 10⁻⁵ (within 1.3%)
 - Doar per-tier unit revenues: 7.652, 7.659, 7.630, 7.613 × 10⁻⁵ (within 0.7%)
 
 ### Sybil (sybil.json, 144 records)
 - All profit rates ≤ 0 for all tiers on both HK and WS substrates
-- HK substrate: tier 0.40 at x=50: −3.01; tier 0.10 at x=50: −1.96
+- HK substrate: tier 0.30 at x=50: −2.71 (steepest); tier 0.10 at x=50: −1.46 (smallest)
 
 ### Performance (§8.5)
 - Latency slope: ~5.5 × 10⁻³ ms/node for both Doar and HK (<1% difference)

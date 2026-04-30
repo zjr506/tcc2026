@@ -94,11 +94,11 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 
 def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
-    """Holme-Kim power-law cluster graph (m=4, p=0.5).
-    Adds realistic clustering (~0.22) while preserving scale-free
-    degree distribution and small-world diameter.
+    """Holme-Kim power-law cluster graph (m=4, p=0.12).
+    p=0.12 yields clustering ~0.068, matching the measured Bitcoin mainnet
+    clustering coefficient (Essaid and Ju, Systems MDPI, 2022).
     """
-    G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.5,
+    G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.12,
                                    seed=int(rng.integers(0, 2**31 - 1)))
     return _to_adj(G, num_nodes)
 
