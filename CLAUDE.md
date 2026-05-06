@@ -77,9 +77,9 @@ Design rule: each subfigure uses exactly ONE label type (tier numbers OR topolog
 
 | Subfig | Content |
 |--------|---------|
-| (a) | Per-tx latency vs |V|: Alg 1 and Alg 1+2 on Doar and HK |
+| (a) | Per-tx latency vs |V|: Alg 1+2 on Doar, HK, WS (3 topologies matching §8.4) |
 | (b) | Block processing latency vs tx count for multiple |V| |
-| (c) | Per-block storage vs |V|: allocation, topology changes, total |
+| (c) | Per-block storage vs |V|: allocation, topology changes (+ ★ §6.4 total estimate) |
 | (d) | Cumulative blockchain size vs blocks for multiple |V| |
 
 ## Running Experiments
@@ -110,7 +110,7 @@ python3 -m simulation.plot_fig6   # -> results/fig6_section_8_5.{pdf,png}
 - HK substrate: tier 0.30 at x=50: −2.71 (steepest); tier 0.10 at x=50: −1.46 (smallest)
 
 ### Performance (§8.5)
-- Latency slope: ~5.5 × 10⁻³ ms/node for both Doar and HK (<1% difference)
+- Latency slopes: Doar 5.52, HK 5.60, WS 5.99 × 10⁻³ ms/node (max spread 9%; WS higher due to BFS cross-edge checks from high clustering)
 - Storage at |V|=22,000: 619.2 KB/block (within 0.5% of §6.4 analytical estimate)
 
 ## References Used in Supplement

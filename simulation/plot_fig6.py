@@ -1,9 +1,9 @@
 """
 Render Fig. 6 (2x2 grid) for Section 8.5 from results of experiment_8_5.
 
-  (a) Per-tx latency vs. |V|: Algorithm 1 vs. Algorithms 1+2  (+ linear fit)
+  (a) Per-tx latency vs. |V|: Alg 1+2 for Doar, HK, WS  (+ linear fit)
   (b) Block processing latency vs. tx_count for |V| in {500,1000,2000,5000}
-  (c) Per-block storage vs. |V|: alloc / topology / total  (+ §6.4 estimate)
+  (c) Per-block storage vs. |V|: alloc / topology changes  (+ §6.4 total marker)
   (d) Cumulative blockchain size vs. blocks for four |V| values
 
 Run:
@@ -49,48 +49,46 @@ def _load(results_dir: str) -> tuple:
     return lv_size, lv_tx, storage
 
 
+# Topology color/marker scheme consistent with Fig. 5 (§8.4)
+TOPO_COLOR = {"HK": "#1f77b4", "Doar": "#d62728", "WS": "#2ca02c"}
+TOPO_MARKER = {"HK": "o", "Doar": "s", "WS": "^"}
+TOPO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
+
+
 # ---------------------------------------------------------------------------
-# (a) Per-tx latency vs. |V|
+# (a) Per-tx latency vs. |V|: Alg 1+2 for three topologies
 # ---------------------------------------------------------------------------
 
 def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
     by_topo: dict = defaultdict(list)
     for r in lv_size:
-        topo = r.get("topology", "Doar")
-        by_topo[topo].append(r)
+        by_topo[r.get("topology", "Doar")].append(r)
 
-    TOPO_STYLES = {
-        "Doar": {"alg1": ("#1f77b4", "o", "-"),  "alg12": ("#d62728", "s", "-")},
-        "HK":   {"alg1": ("#1f77b4", "^", "--"), "alg12": ("#d62728", "D", "--")},
-    }
+    all_xs: List[float] = []
+    all_ys: List[float] = []
 
-    for topo in ("Doar", "HK"):
+    for topo in ("Doar", "HK", "WS"):
         records = sorted(by_topo.get(topo, []), key=lambda r: r["num_nodes"])
         if not records:
             continue
         xs = np.array([r["num_nodes"] for r in records], dtype=float)
-        alg1 = np.array([r["alg1_ms"] for r in records], dtype=float)
-        alg1_se = np.array([r["alg1_se_ms"] for r in records], dtype=float)
-        alg12 = np.array([r["alg12_ms"] for r in records], dtype=float)
-        alg12_se = np.array([r["alg12_se_ms"] for r in records], dtype=float)
-        c1, m1, ls1 = TOPO_STYLES[topo]["alg1"]
-        c12, m12, ls12 = TOPO_STYLES[topo]["alg12"]
-        ax.errorbar(xs, alg1, yerr=alg1_se, marker=m1, markersize=5,
-                    linewidth=1.4, capsize=2, linestyle=ls1, color=c1,
-                    label=f"Alg 1 ({topo})")
-        ax.errorbar(xs, alg12, yerr=alg12_se, marker=m12, markersize=5,
-                    linewidth=1.4, capsize=2, linestyle=ls12, color=c12,
-                    label=f"Alg 1+2 ({topo})")
+        ys = np.array([r["alg12_ms"] for r in records], dtype=float)
+        se = np.array([r["alg12_se_ms"] for r in records], dtype=float)
+        all_xs.extend(xs.tolist())
+        all_ys.extend(ys.tolist())
+        ax.errorbar(xs, ys, yerr=se,
+                    marker=TOPO_MARKER[topo], markersize=5,
+                    linewidth=1.4, capsize=2, linestyle="-",
+                    color=TOPO_COLOR[topo], label=TOPO_LABEL[topo])
 
-    doar_records = sorted(by_topo.get("Doar", []), key=lambda r: r["num_nodes"])
-    if doar_records:
-        xs_d = np.array([r["num_nodes"] for r in doar_records], dtype=float)
-        alg12_d = np.array([r["alg12_ms"] for r in doar_records], dtype=float)
-        slope = float(np.dot(xs_d, alg12_d) / np.dot(xs_d, xs_d))
-        x_fit = np.linspace(xs_d.min(), xs_d.max(), 200)
-        ax.plot(x_fit, slope * x_fit, linestyle=":", linewidth=1.0,
-                color="gray", alpha=0.7,
-                label=f"linear fit ({slope*1e3:.2f}×10⁻³ ms/node)")
+    # Combined linear fit through origin across all topologies
+    xs_a = np.array(all_xs, dtype=float)
+    ys_a = np.array(all_ys, dtype=float)
+    slope = float(np.dot(xs_a, ys_a) / np.dot(xs_a, xs_a))
+    x_fit = np.linspace(xs_a.min(), xs_a.max(), 200)
+    ax.plot(x_fit, slope * x_fit, linestyle="--", linewidth=1.0,
+            color="gray", alpha=0.8,
+            label=f"linear fit ({slope * 1e3:.2f}×10⁻³ ms/node)")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Per-transaction latency (ms)")
@@ -134,17 +132,19 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
     vs_nodes: List[dict] = storage["vs_nodes"]
     xs = np.array([r["num_nodes"] for r in vs_nodes], dtype=float)
     alloc = np.array([r["alloc_kb"] for r in vs_nodes], dtype=float)
-    topo = np.array([r["topology_kb_per_block"] for r in vs_nodes], dtype=float)
+    topo_chg = np.array([r["topology_kb_per_block"] for r in vs_nodes], dtype=float)
     total = np.array([r["total_kb_per_block"] for r in vs_nodes], dtype=float)
 
     ax.plot(xs, alloc, marker="o", markersize=5, linewidth=1.4,
             color="#1f77b4", label="Incentive allocation")
-    ax.plot(xs, topo, marker="^", markersize=5, linewidth=1.4,
+    ax.plot(xs, topo_chg, marker="^", markersize=5, linewidth=1.4,
             color="#ff7f0e", label="Topology changes")
-    ax.plot(xs, total, marker="s", markersize=5, linewidth=1.4,
-            color="#2ca02c", label="Total")
-    ax.axhline(PAPER_ESTIMATE_KB, color="k", linewidth=1.0, linestyle="--",
-               label=f"§6.4 estimate ({PAPER_ESTIMATE_KB:.0f} KB at |V|={PAPER_ESTIMATE_V:,})")
+
+    # §6.4 estimate shown as a star marker (total = alloc + topology at |V|=22,000)
+    ref_total = total[list(xs).index(PAPER_ESTIMATE_V)] if PAPER_ESTIMATE_V in xs else None
+    ax.scatter([PAPER_ESTIMATE_V], [PAPER_ESTIMATE_KB],
+               marker="*", s=120, color="k", zorder=5,
+               label=f"§6.4 estimate ({PAPER_ESTIMATE_KB:.0f} KB total, |V|={PAPER_ESTIMATE_V:,})")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Storage per block (KB)")

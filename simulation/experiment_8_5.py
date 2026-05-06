@@ -56,27 +56,28 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 
 def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
-    """Holme-Kim power-law cluster graph (m=4, p=0.5)."""
-    G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.5,
+    """Holme-Kim power-law cluster graph (m=4, p=0.12).
+    p=0.12 yields clustering ~0.068, matching Bitcoin mainnet (§8.4).
+    """
+    G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.12,
                                    seed=int(rng.integers(0, 2**31 - 1)))
     return _to_adj(G, num_nodes)
 
 
+def make_watts_strogatz(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
+    """Watts-Strogatz small-world graph (k=8, p=0.1), as used in §8.2 and §8.4."""
+    G = nx.watts_strogatz_graph(num_nodes, 8, 0.1,
+                                seed=int(rng.integers(0, 2**31 - 1)))
+    return _to_adj(G, num_nodes)
+
+
 # ---------------------------------------------------------------------------
-# Experiment A1 — Per-tx latency vs. |V|: Alg1 alone vs. Alg1+2
+# Experiment A1 — Per-tx latency vs. |V|: Alg1+2 for three topologies
 # ---------------------------------------------------------------------------
 
 SIZES_A1 = [500, 1000, 2000, 5000, 10000, 20000]
 W_PER_TX = 0.5
 SAMPLE_TXS_A1 = 50  # transactions sampled per seed to keep runtime tractable
-
-
-def _time_alg1_only(adj: List[np.ndarray], sources: List[int]) -> float:
-    """Time Algorithm 1 (graph reduction) alone over all sources."""
-    t0 = time.perf_counter()
-    for s in sources:
-        graph_reduction(adj, s)
-    return time.perf_counter() - t0
 
 
 def _time_alg12(adj: List[np.ndarray], sources: List[int]) -> float:
@@ -92,23 +93,21 @@ def _time_alg12(adj: List[np.ndarray], sources: List[int]) -> float:
 TOPOLOGY_GENERATORS = {
     "Doar": make_doar_like,
     "HK": make_holme_kim,
+    "WS": make_watts_strogatz,
 }
 
 
 def experiment_a1_latency_vs_size() -> List[dict]:
-    """Per-tx latency for Alg1 and Alg1+2 across network sizes,
-    for Doar-like and Holme-Kim topologies.
+    """Per-tx latency for the Alg 1+2 pipeline across network sizes,
+    for Doar, Holme-Kim, and Watts-Strogatz topologies (same three as §8.4).
 
     Returns a list of dicts with keys:
-      topology, num_nodes, mean_edges,
-      alg1_ms, alg1_se_ms,
-      alg12_ms, alg12_se_ms
+      topology, num_nodes, mean_edges, alg12_ms, alg12_se_ms
     """
     results = []
     for topo_name, topo_fn in TOPOLOGY_GENERATORS.items():
         for num_nodes in SIZES_A1:
             print(f"  [A1] {topo_name}  |V|={num_nodes:>6}  sample_tx={SAMPLE_TXS_A1} ...", flush=True)
-            alg1_times: List[float] = []
             alg12_times: List[float] = []
             edge_counts: List[int] = []
             for seed in range(3):
@@ -116,27 +115,23 @@ def experiment_a1_latency_vs_size() -> List[dict]:
                 adj = topo_fn(num_nodes, rng)
                 edge_counts.append(sum(len(a) for a in adj) // 2)
                 sample = rng.choice(num_nodes, size=SAMPLE_TXS_A1, replace=False).tolist()
-                t1 = _time_alg1_only(adj, sample) / SAMPLE_TXS_A1 * 1000.0
                 t12 = _time_alg12(adj, sample) / SAMPLE_TXS_A1 * 1000.0
-                alg1_times.append(t1)
                 alg12_times.append(t12)
-                print(f"      seed={seed}  alg1={t1:.3f} ms  alg1+2={t12:.3f} ms", flush=True)
+                print(f"      seed={seed}  alg1+2={t12:.3f} ms", flush=True)
 
             def _ms(lst: List[float]) -> tuple:
                 m = float(np.mean(lst))
                 s = float(np.std(lst, ddof=1) / np.sqrt(len(lst)))
                 return round(m, 4), round(s, 4)
 
-            a1m, a1s = _ms(alg1_times)
             a12m, a12s = _ms(alg12_times)
             results.append({
                 "topology": topo_name,
                 "num_nodes": num_nodes,
                 "mean_edges": round(float(np.mean(edge_counts)), 1),
-                "alg1_ms": a1m, "alg1_se_ms": a1s,
                 "alg12_ms": a12m, "alg12_se_ms": a12s,
             })
-            print(f"      -> alg1={a1m:.3f}±{a1s:.3f}  alg1+2={a12m:.3f}±{a12s:.3f} ms", flush=True)
+            print(f"      -> alg1+2={a12m:.3f}±{a12s:.3f} ms", flush=True)
     return results
 
 
