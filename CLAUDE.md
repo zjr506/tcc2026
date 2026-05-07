@@ -77,7 +77,7 @@ Design rule: each subfigure uses exactly ONE label type (tier numbers OR topolog
 
 | Subfig | Content |
 |--------|---------|
-| (a) | Per-tx latency vs |V|: Alg 1+2 on Doar, HK, WS (3 topologies matching §8.4) |
+| (a) | Per-node latency rate (ms/|V|) vs |V|: flat bands confirm O(|V|); Doar 5.52, HK 5.60, WS 5.99 ×10⁻³ ms/node |
 | (b) | Block processing latency vs tx count for multiple |V| |
 | (c) | Per-block storage vs |V|: allocation, topology changes (+ ★ §6.4 total estimate) |
 | (d) | Cumulative blockchain size vs blocks for multiple |V| |

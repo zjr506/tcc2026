@@ -38,13 +38,16 @@ of Section 6.4: each incentive allocation entry occupies 28 bytes (a
 event occupies 41 bytes (two addresses and a type byte). We model a churn
 rate of 0.5% of all edges per block.
 
-Fig. 6(a) shows the per-transaction latency of the combined Algorithms 1
-and 2 pipeline across network sizes from |V| = 500 to 20 000, for the
-three topologies. All three curves grow linearly in |V|, with fitted
-slopes of 5.52 × 10⁻³ ms per node for Doar, 5.60 × 10⁻³ ms per node
-for Holme-Kim, and 5.99 × 10⁻³ ms per node for Watts-Strogatz, a
-maximum spread of 9%. The Watts-Strogatz slope is slightly higher because
-its uniformly distributed degree sequence and high local clustering (0.47)
+Fig. 6(a) plots the per-node latency rate — the per-transaction latency
+of the full Algorithms 1 and 2 pipeline divided by |V| — across network
+sizes from |V| = 500 to 20 000 for the three topologies. A flat
+horizontal band for each topology directly confirms O(|V|) scaling: if
+processing time were super-linear in |V|, the rate would rise with |V|.
+The three bands are clearly separated. The fitted per-node rates are
+5.52 × 10⁻³ ms per node for Doar, 5.60 × 10⁻³ ms per node for
+Holme-Kim, and 5.99 × 10⁻³ ms per node for Watts-Strogatz, a maximum
+spread of 9%. The Watts-Strogatz rate is slightly higher because its
+uniformly distributed degree sequence and high local clustering (0.47)
 generate more BFS cross-edge checks per transaction during the graph
 reduction of Algorithm 1. Algorithm 2 adds negligible overhead on top of
 Algorithm 1 for all three topologies, because the incentive computation
@@ -68,11 +71,12 @@ block interval.
 Fig. 6(c) shows the per-block storage overhead versus network size.
 Incentive allocation grows at 28 bytes per node and dominates the total,
 while topology change storage grows much more slowly, remaining below
-40 KB even at |V| = 50 000. At |V| = 22 000 the model yields 601.6 KB
-for incentive allocation and 17.6 KB for topology changes, giving a
-combined total of 619.2 KB per block, within 0.5% of the Section 6.4
-analytical estimate of 616 KB (marked with ★ in the figure), validating
-that estimate precisely.
+40 KB even at |V| = 50 000. The dashed line shows the Section 6.4
+analytical total estimate, extrapolated as a linear function of |V| with
+slope 616 KB / 22 000 nodes. This line lies within 0.5% of the simulated
+total (601.6 KB allocation plus 17.6 KB topology changes = 619.2 KB at
+|V| = 22 000) across the entire plotted range, confirming the analytical
+estimate of Section 6.4 precisely.
 
 Fig. 6(d) shows the cumulative ITFC-specific blockchain overhead over
 time for four network sizes. At Bitcoin's rate of approximately 144

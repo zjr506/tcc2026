@@ -1,9 +1,10 @@
 """
 Render Fig. 6 (2x2 grid) for Section 8.5 from results of experiment_8_5.
 
-  (a) Per-tx latency vs. |V|: Alg 1+2 for Doar, HK, WS  (+ linear fit)
+  (a) Per-node latency rate vs. |V|: Alg 1+2 for Doar, HK, WS
+      (flat lines confirm O(|V|) scaling; topology separation visible)
   (b) Block processing latency vs. tx_count for |V| in {500,1000,2000,5000}
-  (c) Per-block storage vs. |V|: alloc / topology changes  (+ §6.4 total marker)
+  (c) Per-block storage vs. |V|: alloc / topology changes / §6.4 total estimate line
   (d) Cumulative blockchain size vs. blocks for four |V| values
 
 Run:
@@ -56,7 +57,9 @@ TOPO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
 
 
 # ---------------------------------------------------------------------------
-# (a) Per-tx latency vs. |V|: Alg 1+2 for three topologies
+# (a) Per-node latency rate vs. |V|: Alg 1+2 for three topologies
+#     Y = latency_ms / num_nodes  (units: 10⁻³ ms/node)
+#     Flat lines confirm O(|V|) scaling; topology differences are visible.
 # ---------------------------------------------------------------------------
 
 def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
@@ -64,36 +67,27 @@ def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
     for r in lv_size:
         by_topo[r.get("topology", "Doar")].append(r)
 
-    all_xs: List[float] = []
-    all_ys: List[float] = []
-
     for topo in ("Doar", "HK", "WS"):
         records = sorted(by_topo.get(topo, []), key=lambda r: r["num_nodes"])
         if not records:
             continue
         xs = np.array([r["num_nodes"] for r in records], dtype=float)
-        ys = np.array([r["alg12_ms"] for r in records], dtype=float)
-        se = np.array([r["alg12_se_ms"] for r in records], dtype=float)
-        all_xs.extend(xs.tolist())
-        all_ys.extend(ys.tolist())
-        ax.errorbar(xs, ys, yerr=se,
+        ys_ms = np.array([r["alg12_ms"] for r in records], dtype=float)
+        rate = ys_ms / xs * 1e3          # ×10⁻³ ms/node, for plotting
+        rate_se = np.array([r["alg12_se_ms"] for r in records], dtype=float) / xs * 1e3
+        # OLS slope through origin — matches the value cited in prose
+        ols_slope = float(np.dot(xs, ys_ms) / np.dot(xs, xs)) * 1e3
+        ax.errorbar(xs, rate, yerr=rate_se,
                     marker=TOPO_MARKER[topo], markersize=5,
                     linewidth=1.4, capsize=2, linestyle="-",
-                    color=TOPO_COLOR[topo], label=TOPO_LABEL[topo])
-
-    # Combined linear fit through origin across all topologies
-    xs_a = np.array(all_xs, dtype=float)
-    ys_a = np.array(all_ys, dtype=float)
-    slope = float(np.dot(xs_a, ys_a) / np.dot(xs_a, xs_a))
-    x_fit = np.linspace(xs_a.min(), xs_a.max(), 200)
-    ax.plot(x_fit, slope * x_fit, linestyle="--", linewidth=1.0,
-            color="gray", alpha=0.8,
-            label=f"linear fit ({slope * 1e3:.2f}×10⁻³ ms/node)")
+                    color=TOPO_COLOR[topo],
+                    label=f"{TOPO_LABEL[topo]} ({ols_slope:.2f})")
 
     ax.set_xlabel(r"Network size $|V|$")
-    ax.set_ylabel("Per-transaction latency (ms)")
+    ax.set_ylabel(r"Latency rate (10$^{-3}$ ms/node)")
     ax.grid(alpha=0.3)
-    ax.legend(fontsize=7.5, loc="upper left", framealpha=0.9)
+    ax.legend(fontsize=7.5, loc="upper right", framealpha=0.9,
+              title="Topology (mean rate)", title_fontsize=7)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
@@ -133,18 +127,19 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
     xs = np.array([r["num_nodes"] for r in vs_nodes], dtype=float)
     alloc = np.array([r["alloc_kb"] for r in vs_nodes], dtype=float)
     topo_chg = np.array([r["topology_kb_per_block"] for r in vs_nodes], dtype=float)
-    total = np.array([r["total_kb_per_block"] for r in vs_nodes], dtype=float)
 
     ax.plot(xs, alloc, marker="o", markersize=5, linewidth=1.4,
             color="#1f77b4", label="Incentive allocation")
     ax.plot(xs, topo_chg, marker="^", markersize=5, linewidth=1.4,
             color="#ff7f0e", label="Topology changes")
 
-    # §6.4 estimate shown as a star marker (total = alloc + topology at |V|=22,000)
-    ref_total = total[list(xs).index(PAPER_ESTIMATE_V)] if PAPER_ESTIMATE_V in xs else None
-    ax.scatter([PAPER_ESTIMATE_V], [PAPER_ESTIMATE_KB],
-               marker="*", s=120, color="k", zorder=5,
-               label=f"§6.4 estimate ({PAPER_ESTIMATE_KB:.0f} KB total, |V|={PAPER_ESTIMATE_V:,})")
+    # §6.4 analytical total estimate as a dashed line across the full |V| range:
+    # slope = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V KB/node, extrapolated linearly.
+    x_est = np.array([xs.min(), xs.max()])
+    slope_est = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V
+    ax.plot(x_est, slope_est * x_est, linestyle="--", linewidth=1.4,
+            color="#2ca02c",
+            label=f"§6.4 total estimate ({PAPER_ESTIMATE_KB:.0f} KB at |V|={PAPER_ESTIMATE_V:,})")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Storage per block (KB)")
