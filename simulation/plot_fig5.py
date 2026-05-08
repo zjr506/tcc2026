@@ -8,7 +8,7 @@ results produced by `python3 -m simulation.experiment_8_4`.
   (d) Per-tier Sybil-attack profit rate vs. pseudonyms — Holme-Kim
 
 Subfigure (a) uses topology name labels (Holme-Kim, Doar, Watts-Strogatz).
-Subfigures (b)-(d) use tier proportion labels (0.40, 0.30, 0.20, 0.10).
+Subfigures (b)-(d) use tier proportion labels (0.4, 0.3, 0.2, 0.1).
 
 Run:
     python3 -m simulation.plot_fig5
@@ -28,14 +28,14 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.lines import Line2D
 
-TIERS = ("0.40", "0.30", "0.20", "0.10")
+TIERS = ("0.4", "0.3", "0.2", "0.1")
 TIER_COLORS = {
-    "0.40": "#888888",
-    "0.30": "#1f77b4",
-    "0.20": "#ff7f0e",
-    "0.10": "#d62728",
+    "0.4": "#888888",
+    "0.3": "#1f77b4",
+    "0.2": "#ff7f0e",
+    "0.1": "#d62728",
 }
-TIER_MARKERS = {"0.40": "o", "0.30": "s", "0.20": "^", "0.10": "D"}
+TIER_MARKERS = {"0.4": "o", "0.3": "s", "0.2": "^", "0.1": "D"}
 
 TOPO_KEY_TO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
 TOPO_COLORS = {"Holme-Kim": "#1f77b4", "Doar": "#d62728", "Watts-Strogatz": "#2ca02c"}

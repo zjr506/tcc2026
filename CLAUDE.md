@@ -47,11 +47,11 @@ results/
 
 ### Four Resource Tiers (§8.4 heterogeneity model)
 | Tier (proportion) | Capacity | Mining power |
-|-------------------|----------|-------------|
-| 0.40              | 250      | 1×          |
-| 0.30              | 1,000    | 4×          |
-| 0.20              | 4,000    | 16×         |
-| 0.10              | 16,000   | 64×         |
+|-------------------|----------|--------------|
+| 0.4              | 250      | 1×          |
+| 0.3              | 1,000    | 4×          |
+| 0.2              | 4,000    | 16×         |
+| 0.1              | 16,000   | 64×         |
 
 When forwarding work exceeds tier capacity C_i, revenue and forwards are scaled by C_i / W_i.
 
@@ -65,11 +65,11 @@ When forwarding work exceeds tier capacity C_i, revenue and forwards are scaled 
 ## Fig. 5 Layout (§8.4)
 
 | Subfig | Content | Legend labels |
-|--------|---------|--------------|
+|--------|---------|---------------|
 | (a) | Per-tier profit rate by topology (grouped bar chart) | Holme-Kim, Doar, Watts-Strogatz |
-| (b) | Per-tier profit rate vs links, Holme-Kim | 0.40, 0.30, 0.20, 0.10 |
-| (c) | Per-tier forwarding count vs links, Holme-Kim | 0.40, 0.30, 0.20, 0.10 |
-| (d) | Per-tier Sybil profit rate vs pseudonyms, Holme-Kim | 0.40, 0.30, 0.20, 0.10 |
+| (b) | Per-tier profit rate vs links, Holme-Kim | 0.4, 0.3, 0.2, 0.1 |
+| (c) | Per-tier forwarding count vs links, Holme-Kim | 0.4, 0.3, 0.2, 0.1 |
+| (d) | Per-tier Sybil profit rate vs pseudonyms, Holme-Kim | 0.4, 0.3, 0.2, 0.1 |
 
 Design rule: each subfigure uses exactly ONE label type (tier numbers OR topology names), never both.
 
@@ -107,7 +107,7 @@ python3 -m simulation.plot_fig6   # -> results/fig6_section_8_5.{pdf,png}
 
 ### Sybil (sybil.json, 144 records)
 - All profit rates ≤ 0 for all tiers on both HK and WS substrates
-- HK substrate: tier 0.30 at x=50: −2.71 (steepest); tier 0.10 at x=50: −1.46 (smallest)
+- HK substrate: tier 0.3 at x=50: −2.71 (steepest); tier 0.1 at x=50: −1.46 (smallest)
 
 ### Performance (§8.5)
 - Latency slopes: Doar 5.52, HK 5.60, WS 5.99 × 10⁻³ ms/node (max spread 9%; WS higher due to BFS cross-edge checks from high clustering)
