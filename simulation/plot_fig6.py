@@ -85,9 +85,11 @@ def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel(r"Latency rate (10$^{-3}$ ms/node)")
+    ax.set_xticks([500, 2000, 5000, 10000, 20000])
+    ax.set_xticklabels(["500", "2k", "5k", "10k", "20k"])
     ax.grid(alpha=0.3)
     ax.legend(fontsize=7.5, loc="upper right", framealpha=0.9,
-              title="Topology (mean rate)", title_fontsize=7)
+              title="Topology (rate ×10⁻³ ms/node)", title_fontsize=7)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
