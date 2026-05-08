@@ -79,9 +79,10 @@ total (601.6 KB allocation plus 17.6 KB topology changes = 619.2 KB at
 estimate of Section 6.4 precisely.
 
 Fig. 6(d) shows the cumulative ITFC-specific blockchain overhead over
-time for four network sizes. At Bitcoin's rate of approximately 144
-blocks per day, the |V| = 22 000 case accumulates roughly 87 MB per day,
-while the |V| = 5000 case accumulates only 20 MB per day. We conclude
+time for the same four network sizes as Fig. 6(b). At Bitcoin's rate of
+approximately 144 blocks per day, the |V| = 5000 case accumulates
+roughly 20 MB per day, while the |V| = 500 case accumulates less than
+2 MB per day. We conclude
 that the deployment performance overhead of ITFC is modest and well
 within the storage and computation capacities of the cloud nodes
 described in Section 3.

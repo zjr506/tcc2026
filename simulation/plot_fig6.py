@@ -156,14 +156,19 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
 # ---------------------------------------------------------------------------
 
 def _plot_subfig_d(ax: plt.Axes, storage: dict) -> None:
-    by_v: dict = defaultdict(list)
-    for r in storage["cumulative"]:
-        by_v[r["num_nodes"]].append((r["num_blocks"], r["cumulative_mb"]))
+    # Compute cumulative on the fly from vs_nodes so (d) uses the same
+    # |V| range as (b): [500, 1000, 2000, 5000].
+    SIZES_D = [500, 1000, 2000, 5000]
+    BLOCKS = [1, 10, 50, 100, 500, 1000]
+    kb_per_block = {r["num_nodes"]: r["total_kb_per_block"]
+                    for r in storage["vs_nodes"]}
 
-    for num_nodes, pairs in sorted(by_v.items()):
-        pairs.sort()
-        xs = [p[0] for p in pairs]
-        ys = [p[1] for p in pairs]
+    for num_nodes in SIZES_D:
+        if num_nodes not in kb_per_block:
+            continue
+        kb = kb_per_block[num_nodes]
+        xs = BLOCKS
+        ys = [kb * nb / 1024.0 for nb in BLOCKS]
         ax.plot(xs, ys,
                 marker=SIZE_MARKERS.get(num_nodes, "o"), markersize=5,
                 linewidth=1.4, color=SIZE_COLORS.get(num_nodes, "k"),
