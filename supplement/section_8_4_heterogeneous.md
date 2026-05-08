@@ -82,7 +82,7 @@ difference is how many forwards each node can physically deliver.
 
 Fig. 5(c) confirms this by showing the sufficient forwarding times per
 tier. Proportion-0.4 nodes saturate at their capacity of 250,
-Proportion-0.3 nodes at 1000, while proportion-0.1 nodes continue to
+proportion-0.3 nodes at 1000, while proportion-0.1 nodes continue to
 grow with degree. The local clustering of the Holme-Kim graph does
 not alter the saturation pattern, because Algorithm 1 reduces the graph
 to a BFS tree in which local triangles are pruned before incentive
