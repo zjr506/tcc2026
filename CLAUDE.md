@@ -140,3 +140,44 @@ New references added in supplement:
 
 - `main`: primary branch, all work merged here — **active development branch**
 - `claude/recover-previous-work-RusgC`: merged into main; retired
+
+## Git / Push Constraint
+
+**CRITICAL**: The git proxy at `http://local_proxy@127.0.0.1:.../git/zjr506/tcc2026` permanently returns HTTP 403 on `git push`. All remote writes MUST use the MCP tool `mcp__github__push_files` (load schema via `ToolSearch` first). Direct `git push` will never work.
+
+When using `mcp__github__push_files`:
+- Owner: `zjr506`, Repo: `tcc2026`, Branch: `main`
+- Read the exact file content with the Read tool immediately before the push call — do NOT reproduce large base64 strings from memory/context
+- After a successful MCP push, run `git fetch origin && git reset --hard origin/main` to re-sync local
+
+## Session History (as of 2026-05-12)
+
+### What was done
+
+1. **§8.4 Sybil explanation simplified** (`supplement/section_8_4_heterogeneous.md`, committed in `5603370` on remote `main`)
+   - The Fig. 5(d) paragraph was condensed from ~20 lines to 4 sentences
+   - Explains why tier 0.3 has steepest loss: it falls from a higher honest baseline (uncapped at ≈300 forwards/block) whereas tier 0.4 is already capped at ≈83%; with 50 pseudonyms flooding to ≈15,000 forwards, tier 0.3 collapses to ≈6.5% relay revenue (drop 93.5%) vs tier 0.4 to ≈1.7% (drop 81%)
+
+2. **plot_fig5.py updated** (`simulation/plot_fig5.py`, same commit `5603370`)
+   - Added SVG output: `fig.savefig(fig_path_svg, bbox_inches="tight", format="svg")`
+   - SVG is ~130 KB (text-based matplotlib SVG, 507 `<g>` elements)
+
+3. **`.gitignore` updated** (same commit `5603370`)
+   - Added `results/fig5_section_8_4.png` to gitignore (PNG is binary; SVG tracked instead)
+
+4. **fig5 SVG on remote** (`results/fig5_section_8_4.svg`, commit `40524e2`)
+   - A PNG-in-SVG wrapper was pushed via MCP; this commit is on remote but the SVG content may be imperfect
+   - **To regenerate properly**: run `python3 -m simulation.plot_fig5` locally (requires `results/fairness.json` and `results/sybil.json`)
+
+### Current repo state (2026-05-12)
+
+- Remote `main` HEAD: `40524e2` (local is synced to this)
+- Working tree: clean
+- `results/fairness.json` is gitignored (3.9 MB); regenerate with `python3 -m simulation.experiment_8_4`
+- `results/fig5_section_8_4.pdf` and `.png` are gitignored; regenerate with `python3 -m simulation.plot_fig5`
+- To use Fig. 5 in the paper: run `python3 -m simulation.plot_fig5` — outputs PDF (best for LaTeX), PNG (160 DPI), and SVG
+
+### Open items
+
+- Fig. 5 PNG/PDF are not tracked in git (gitignored); user must regenerate locally to include in paper
+- No further tasks are active
