@@ -212,6 +212,7 @@ def main() -> None:
     results_dir = os.path.abspath(os.path.join(here, "..", "results"))
     fig_path_pdf = os.path.join(results_dir, "fig5_section_8_4.pdf")
     fig_path_png = os.path.join(results_dir, "fig5_section_8_4.png")
+    fig_path_svg = os.path.join(results_dir, "fig5_section_8_4.svg")
 
     fairness, sybil = _load(results_dir)
 
@@ -223,8 +224,11 @@ def main() -> None:
     fig.tight_layout()
     fig.savefig(fig_path_pdf, bbox_inches="tight")
     fig.savefig(fig_path_png, bbox_inches="tight", dpi=160)
+    plt.rcParams["svg.fonttype"] = "none"
+    fig.savefig(fig_path_svg, bbox_inches="tight", format="svg")
     print(f"[plot_fig5] saved {fig_path_pdf}")
     print(f"[plot_fig5] saved {fig_path_png}")
+    print(f"[plot_fig5] saved {fig_path_svg}")
 
 
 if __name__ == "__main__":

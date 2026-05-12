@@ -5,5 +5,6 @@ __pycache__/
 # fairness.json is too large (3.9 MB) to push via available git proxy
 results/fairness.json
 
-# fig5 PDF is too large to push via available proxy; regenerate with plot_fig5
+# fig5 PDF and PNG are too large to push via available proxy; regenerate with plot_fig5
 results/fig5_section_8_4.pdf
+results/fig5_section_8_4.png

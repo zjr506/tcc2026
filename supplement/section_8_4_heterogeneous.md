@@ -95,29 +95,18 @@ pseudonymous nodes forming a clique, with each pseudonymous transaction
 paying 0.1 f0. Every curve stays at or below zero for all x, confirming
 that the attack is unprofitable regardless of the adversary's resources.
 The proportion-0.3 adversary suffers the steepest loss (−2.71 at
-x = 50), steeper than the proportion-0.4 adversary, because the two
-tiers begin from different honest baselines. On a 300-node substrate
-with 300 honest transactions per block, the expected per-node forwarding
-load is approximately 300 forwards — below the proportion-0.3 capacity
-ceiling of 1,000 but above the proportion-0.4 ceiling of 250. A
-proportion-0.3 adversary therefore earns full relay revenue in honest
-operation, while a proportion-0.4 adversary is already partially
-capacity-capped at approximately 250/300 ≈ 83% of full revenue. When
-50 pseudonyms form a clique with the adversary, every pseudonym
-transaction must route through the adversary as the sole gateway to the
-honest network, inflating its per-block forwarding count by
-approximately x × N = 50 × 300 = 15,000 — far exceeding the 1,000-forward
-capacity. Relay revenue collapses to approximately 1,000/15,000 ≈ 6.5%
-of the honest rate, an absolute drop of ≈93.5%. For proportion-0.4,
-whose baseline was already capped at ≈83%, the same flood drives revenue
-to approximately 250/15,000 ≈ 1.7%, a smaller absolute drop of ≈81%.
-Proportion-0.3 loses more because its higher capacity supported a higher
-honest baseline, leaving a larger gap to close. The proportion-0.1
-adversary sees the smallest penalty (−1.46 at x = 50) because its
-16,000-forward budget remains near capacity even under the full attack
-load, preserving most of its relay revenue. Heterogeneity does not open
-a new exploitable seam; capacity-bounded adversaries find the attack
-harder, not easier.
+x = 50) because it falls from a higher honest baseline: at ≈300 honest
+forwards per block, proportion-0.3 (capacity 1,000) earns full relay
+revenue while proportion-0.4 (capacity 250) is already partially capped
+at ≈83%. When 50 pseudonyms clique with the adversary, all pseudonym
+traffic must route through it as the sole gateway, flooding its
+forwarding count to ≈15,000; relay revenue collapses to ≈6.5% for
+proportion-0.3 (drop ≈93.5%) versus ≈1.7% for proportion-0.4 (drop
+≈81%). The proportion-0.1 adversary sees the smallest penalty (−1.46
+at x = 50) because its 16,000-forward budget absorbs even the full
+attack load with little saturation. Heterogeneity does not open a new
+exploitable seam; capacity-bounded adversaries find the attack harder,
+not easier.
 
 We conclude that the fairness and attack-resistance guarantees of
 Sections 8.1 and 8.2 extend to heterogeneous cloud node populations
