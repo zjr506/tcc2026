@@ -61,12 +61,12 @@ Fig. 6(b) shows the block processing latency as a function of the number
 of transactions for four network sizes on the Doar topology. All four
 curves are linear in the number of transactions, confirming O(T) scaling
 in the transaction count T. The curves are separated by |V|: the
-|V| = 500 line processes 2000 transactions in 4.6 s, while the
-|V| = 5000 line takes 52.8 s for the same count, matching the
-linear-in-|V| scaling established in Fig. 6(a). At Bitcoin's approximate
-rate of 2000 to 3000 transactions per block and network scale
-|V| = 22 000, block generators have ample margin within the ten-minute
-block interval.
+|V| = 500 line processes 2000 transactions in 3.3 s, while the
+|V| = 5000 line takes 36.1 s for the same count, matching the
+linear-in-|V| scaling established in Fig. 6(a). Extrapolating from the
+|V| = 5000 curve to the Bitcoin reference scale |V| = 22 000 gives
+approximately 159 s for 2000 transactions and 239 s for 3000
+transactions, leaving ample margin within the ten-minute block interval.
 
 Fig. 6(c) shows the per-block storage overhead versus network size.
 Incentive allocation grows at 28 bytes per node and dominates the total,
