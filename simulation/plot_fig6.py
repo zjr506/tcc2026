@@ -4,7 +4,7 @@ Render Fig. 6 (2x2 grid) for Section 8.5 from results of experiment_8_5.
   (a) Per-node latency rate vs. |V|: Alg 1+2 for Doar, HK, WS
       (flat lines confirm O(|V|) scaling; topology separation visible)
   (b) Block processing latency vs. tx_count for |V| in {500,1000,2000,5000}
-  (c) Per-block storage vs. |V|: allocation / topology changes / total / Section 6.4 allocation estimate
+  (c) Per-block storage vs. |V|: allocation / topology changes / total
   (d) Cumulative blockchain size vs. blocks for four |V| values
 
 Run:
@@ -138,13 +138,13 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
     ax.plot(xs, total, marker="D", markersize=4, linewidth=1.4,
             color="#9467bd", label="Total")
 
-    # Section 6.4 estimates the allocation field only. Use the same decimal KB
-    # convention here so the dashed line is directly comparable to alloc_kb.
-    x_est = np.array([xs.min(), xs.max()])
-    slope_est = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V
-    ax.plot(x_est, slope_est * x_est, linestyle="--", linewidth=1.4,
-            color="#2ca02c",
-            label="Sec. 6.4 estimate")
+    # Section 6.4 estimates the allocation field only; it coincides with
+    # alloc_kb, so annotate that curve instead of plotting a duplicate line.
+    ax.annotate("matches Sec. 6.4 estimate",
+                xy=(PAPER_ESTIMATE_V, PAPER_ESTIMATE_KB),
+                xytext=(PAPER_ESTIMATE_V * 1.25, PAPER_ESTIMATE_KB * 0.78),
+                arrowprops=dict(arrowstyle="->", color="#1f77b4", lw=0.9),
+                fontsize=7.5, color="#1f77b4")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Storage per block (KB)")
