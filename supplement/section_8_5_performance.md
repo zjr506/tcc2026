@@ -44,17 +44,17 @@ sizes from |V| = 500 to 20 000 for the three topologies. A flat
 horizontal band for each topology directly confirms O(|V|) scaling: if
 processing time were super-linear in |V|, the rate would rise with |V|.
 The three bands are clearly separated. The fitted per-node rates are
-5.52 x 10^-3 ms per node for Doar, 5.60 x 10^-3 ms per node for
-Holme-Kim, and 5.99 x 10^-3 ms per node for Watts-Strogatz, a maximum
-spread of 9%. The Watts-Strogatz rate is slightly higher because its
+3.37 x 10^-3 ms per node for Doar, 3.67 x 10^-3 ms per node for
+Holme-Kim, and 4.49 x 10^-3 ms per node for Watts-Strogatz, a maximum
+spread of approximately 33%. The Watts-Strogatz rate is higher because its
 uniformly distributed degree sequence and high local clustering (0.47)
 generate more BFS cross-edge checks per transaction during the graph
 reduction of Algorithm 1. Algorithm 2 adds negligible overhead on top of
 Algorithm 1 for all three topologies, because the incentive computation
 iterates over the same BFS edge set and requires no additional graph
 traversal. At the Bitcoin reference scale of |V| = 22 000 the
-extrapolated per-transaction latency is approximately 121 ms for Doar,
-123 ms for Holme-Kim, and 132 ms for Watts-Strogatz, all well below the
+extrapolated per-transaction latency is approximately 74 ms for Doar,
+81 ms for Holme-Kim, and 99 ms for Watts-Strogatz, all well below the
 ten-minute block interval.
 
 Fig. 6(b) shows the block processing latency as a function of the number
@@ -96,8 +96,8 @@ structural properties as documented in Section 8.4: Doar (clustering
 0.069, directly matching the measured Bitcoin mainnet clustering of 0.068
 reported by Essaid and Ju, "Deep learning-based community detection
 approach on Bitcoin network," Systems, 2022), and Watts-Strogatz
-(clustering 0.47 to 0.48). The per-transaction slopes are within 9% of
-one another; the Watts-Strogatz slope is slightly elevated because its
+(clustering 0.47 to 0.48). The per-transaction slopes are within 33% of
+one another; the Watts-Strogatz slope is elevated because its
 high clustering generates more cross-edge checks during Algorithm 1, but
 the O(|V|) class of the bound is unchanged. The ITFC overhead figures
 reported above are therefore valid across all three network structures and
