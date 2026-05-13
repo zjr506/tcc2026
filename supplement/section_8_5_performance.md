@@ -1,8 +1,8 @@
-# Section 8.5 — Deployment Performance Overhead
+# Section 8.5 - Deployment Performance Overhead
 
 > Drop-in subsection for the main paper, matching the prose style and
-> length of Sections 8.1–8.4. Fig. 6 is a 2×2 grid with subfigures
-> (a)–(d), matching the layout of Fig. 4 and Fig. 5.
+> length of Sections 8.1-8.4. Fig. 6 is a 2x2 grid with subfigures
+> (a)-(d), matching the layout of Fig. 4 and Fig. 5.
 
 ---
 
@@ -38,14 +38,14 @@ of Section 6.4: each incentive allocation entry occupies 28 bytes (a
 event occupies 41 bytes (two addresses and a type byte). We model a churn
 rate of 0.5% of all edges per block.
 
-Fig. 6(a) plots the per-node latency rate — the per-transaction latency
-of the full Algorithms 1 and 2 pipeline divided by |V| — across network
+Fig. 6(a) plots the per-node latency rate - the per-transaction latency
+of the full Algorithms 1 and 2 pipeline divided by |V| - across network
 sizes from |V| = 500 to 20 000 for the three topologies. A flat
 horizontal band for each topology directly confirms O(|V|) scaling: if
 processing time were super-linear in |V|, the rate would rise with |V|.
 The three bands are clearly separated. The fitted per-node rates are
-5.52 × 10⁻³ ms per node for Doar, 5.60 × 10⁻³ ms per node for
-Holme-Kim, and 5.99 × 10⁻³ ms per node for Watts-Strogatz, a maximum
+5.52 x 10^-3 ms per node for Doar, 5.60 x 10^-3 ms per node for
+Holme-Kim, and 5.99 x 10^-3 ms per node for Watts-Strogatz, a maximum
 spread of 9%. The Watts-Strogatz rate is slightly higher because its
 uniformly distributed degree sequence and high local clustering (0.47)
 generate more BFS cross-edge checks per transaction during the graph
@@ -70,13 +70,15 @@ block interval.
 
 Fig. 6(c) shows the per-block storage overhead versus network size.
 Incentive allocation grows at 28 bytes per node and dominates the total,
-while topology change storage grows much more slowly, remaining below
-40 KB even at |V| = 50 000. The dashed line shows the Section 6.4
-analytical total estimate, extrapolated as a linear function of |V| with
-slope 616 KB / 22 000 nodes. This line lies within 0.5% of the simulated
-total (601.6 KB allocation plus 17.6 KB topology changes = 619.2 KB at
-|V| = 22 000) across the entire plotted range, confirming the analytical
-estimate of Section 6.4 precisely.
+while topology change storage grows much more slowly, reaching about
+41 KB even at |V| = 50 000. The dashed line shows the Section 6.4
+analytical estimate for the incentive allocation field, extrapolated as a
+linear function of |V| with slope 616 KB / 22 000 nodes. Using the same
+decimal-KB convention as Section 6.4, this line coincides with the
+simulated allocation component: at |V| = 22 000, the allocation field is
+616.0 KB, topology changes add 18.0 KB, and the total is 634.0 KB. Thus
+topology churn adds only 2.9% over the allocation-field estimate at the
+Bitcoin-scale reference point.
 
 Fig. 6(d) shows the cumulative ITFC-specific blockchain overhead over
 time for the same four network sizes as Fig. 6(b). At Bitcoin's rate of
