@@ -4,7 +4,7 @@ Render Fig. 6 (2x2 grid) for Section 8.5 from results of experiment_8_5.
   (a) Per-node latency rate vs. |V|: Alg 1+2 for Doar, HK, WS
       (flat lines confirm O(|V|) scaling; topology separation visible)
   (b) Block processing latency vs. tx_count for |V| in {500,1000,2000,5000}
-  (c) Per-block storage vs. |V|: alloc / topology changes / §6.4 total estimate line
+  (c) Per-block storage vs. |V|: allocation / topology changes / total / Section 6.4 allocation estimate
   (d) Cumulative blockchain size vs. blocks for four |V| values
 
 Run:
@@ -50,7 +50,7 @@ def _load(results_dir: str) -> tuple:
     return lv_size, lv_tx, storage
 
 
-# Topology color/marker scheme consistent with Fig. 5 (§8.4)
+# Topology color/marker scheme consistent with Fig. 5 (Section 8.4)
 TOPO_COLOR = {"HK": "#1f77b4", "Doar": "#d62728", "WS": "#2ca02c"}
 TOPO_MARKER = {"HK": "o", "Doar": "s", "WS": "^"}
 TOPO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
@@ -58,7 +58,7 @@ TOPO_LABEL = {"HK": "Holme-Kim", "Doar": "Doar", "WS": "Watts-Strogatz"}
 
 # ---------------------------------------------------------------------------
 # (a) Per-node latency rate vs. |V|: Alg 1+2 for three topologies
-#     Y = latency_ms / num_nodes  (units: 10⁻³ ms/node)
+#     Y = latency_ms / num_nodes  (units: 10^-3 ms/node)
 #     Flat lines confirm O(|V|) scaling; topology differences are visible.
 # ---------------------------------------------------------------------------
 
@@ -73,9 +73,9 @@ def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
             continue
         xs = np.array([r["num_nodes"] for r in records], dtype=float)
         ys_ms = np.array([r["alg12_ms"] for r in records], dtype=float)
-        rate = ys_ms / xs * 1e3          # ×10⁻³ ms/node, for plotting
+        rate = ys_ms / xs * 1e3          # x10^-3 ms/node, for plotting
         rate_se = np.array([r["alg12_se_ms"] for r in records], dtype=float) / xs * 1e3
-        # OLS slope through origin — matches the value cited in prose
+        # OLS slope through origin - matches the value cited in prose
         ols_slope = float(np.dot(xs, ys_ms) / np.dot(xs, xs)) * 1e3
         ax.errorbar(xs, rate, yerr=rate_se,
                     marker=TOPO_MARKER[topo], markersize=5,
@@ -89,7 +89,7 @@ def _plot_subfig_a(ax: plt.Axes, lv_size: List[dict]) -> None:
     ax.set_xticklabels(["500", "2k", "5k", "10k", "20k"])
     ax.grid(alpha=0.3)
     ax.legend(fontsize=7.5, loc="upper right", framealpha=0.9,
-              title="Topology (rate ×10⁻³ ms/node)", title_fontsize=7)
+              title="Topology (rate x10^-3 ms/node)", title_fontsize=7)
     ax.text(0.5, -0.23, "(a)", transform=ax.transAxes,
             ha="center", va="top", fontsize=10)
 
@@ -129,19 +129,22 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
     xs = np.array([r["num_nodes"] for r in vs_nodes], dtype=float)
     alloc = np.array([r["alloc_kb"] for r in vs_nodes], dtype=float)
     topo_chg = np.array([r["topology_kb_per_block"] for r in vs_nodes], dtype=float)
+    total = np.array([r["total_kb_per_block"] for r in vs_nodes], dtype=float)
 
     ax.plot(xs, alloc, marker="o", markersize=5, linewidth=1.4,
             color="#1f77b4", label="Incentive allocation")
     ax.plot(xs, topo_chg, marker="^", markersize=5, linewidth=1.4,
             color="#ff7f0e", label="Topology changes")
+    ax.plot(xs, total, marker="D", markersize=4, linewidth=1.4,
+            color="#9467bd", label="Total")
 
-    # §6.4 analytical total estimate as a dashed line across the full |V| range:
-    # slope = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V KB/node, extrapolated linearly.
+    # Section 6.4 estimates the allocation field only. Use the same decimal KB
+    # convention here so the dashed line is directly comparable to alloc_kb.
     x_est = np.array([xs.min(), xs.max()])
     slope_est = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V
     ax.plot(x_est, slope_est * x_est, linestyle="--", linewidth=1.4,
             color="#2ca02c",
-            label=f"§6.4 total estimate ({PAPER_ESTIMATE_KB:.0f} KB at |V|={PAPER_ESTIMATE_V:,})")
+            label=f"Section 6.4 allocation estimate ({PAPER_ESTIMATE_KB:.0f} KB at |V|={PAPER_ESTIMATE_V:,})")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Storage per block (KB)")
@@ -168,7 +171,7 @@ def _plot_subfig_d(ax: plt.Axes, storage: dict) -> None:
             continue
         kb = kb_per_block[num_nodes]
         xs = BLOCKS
-        ys = [kb * nb / 1024.0 for nb in BLOCKS]
+        ys = [kb * nb / 1000.0 for nb in BLOCKS]
         ax.plot(xs, ys,
                 marker=SIZE_MARKERS.get(num_nodes, "o"), markersize=5,
                 linewidth=1.4, color=SIZE_COLORS.get(num_nodes, "k"),
