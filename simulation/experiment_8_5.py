@@ -3,12 +3,12 @@ Section 8.5 supplementary experiment: ITFC deployment performance overhead.
 
 Two experiments, each producing multi-line data for Fig. 6:
 
-  A — Algorithmic computation latency
+  A - Algorithmic computation latency
       (a1) Per-tx latency vs. |V|: Algorithm 1 alone vs. Algorithms 1+2
       (a2) Block latency vs. tx_count for |V| in {500, 1000, 2000, 5000}
 
-  B — Topological storage overhead
-      (b1) Per-block storage (KB) vs. |V|: alloc / topology / total
+  B - Topological storage overhead
+      (b1) Per-block storage (KB) vs. |V|: allocation / topology / total
       (b2) Cumulative blockchain size (MB) vs. blocks for four |V| values
 
 Run:
@@ -57,7 +57,7 @@ def make_doar_like(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
     """Holme-Kim power-law cluster graph (m=4, p=0.12).
-    p=0.12 yields clustering ~0.068, matching Bitcoin mainnet (§8.4).
+    p=0.12 yields clustering ~0.068, matching Bitcoin mainnet (Section 8.4).
     """
     G = nx.powerlaw_cluster_graph(num_nodes, 4, 0.12,
                                    seed=int(rng.integers(0, 2**31 - 1)))
@@ -65,14 +65,14 @@ def make_holme_kim(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]
 
 
 def make_watts_strogatz(num_nodes: int, rng: np.random.Generator) -> List[np.ndarray]:
-    """Watts-Strogatz small-world graph (k=8, p=0.1), as used in §8.2 and §8.4."""
+    """Watts-Strogatz small-world graph (k=8, p=0.1), as used in Section 8.2 and Section 8.4."""
     G = nx.watts_strogatz_graph(num_nodes, 8, 0.1,
                                 seed=int(rng.integers(0, 2**31 - 1)))
     return _to_adj(G, num_nodes)
 
 
 # ---------------------------------------------------------------------------
-# Experiment A1 — Per-tx latency vs. |V|: Alg1+2 for three topologies
+# Experiment A1 - Per-tx latency vs. |V|: Alg1+2 for three topologies
 # ---------------------------------------------------------------------------
 
 SIZES_A1 = [500, 1000, 2000, 5000, 10000, 20000]
@@ -99,7 +99,7 @@ TOPOLOGY_GENERATORS = {
 
 def experiment_a1_latency_vs_size() -> List[dict]:
     """Per-tx latency for the Alg 1+2 pipeline across network sizes,
-    for Doar, Holme-Kim, and Watts-Strogatz topologies (same three as §8.4).
+    for Doar, Holme-Kim, and Watts-Strogatz topologies (same three as Section 8.4).
 
     Returns a list of dicts with keys:
       topology, num_nodes, mean_edges, alg12_ms, alg12_se_ms
@@ -131,12 +131,12 @@ def experiment_a1_latency_vs_size() -> List[dict]:
                 "mean_edges": round(float(np.mean(edge_counts)), 1),
                 "alg12_ms": a12m, "alg12_se_ms": a12s,
             })
-            print(f"      -> alg1+2={a12m:.3f}±{a12s:.3f} ms", flush=True)
+            print(f"      -> alg1+2={a12m:.3f}+/-{a12s:.3f} ms", flush=True)
     return results
 
 
 # ---------------------------------------------------------------------------
-# Experiment A2 — Block latency vs. tx_count for multiple |V|
+# Experiment A2 - Block latency vs. tx_count for multiple |V|
 # ---------------------------------------------------------------------------
 
 TX_COUNTS_A2 = [50, 100, 200, 500, 1000, 2000]
@@ -176,12 +176,13 @@ def experiment_a2_latency_vs_txcount() -> List[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Experiment B — Storage overhead
+# Experiment B - Storage overhead
 # ---------------------------------------------------------------------------
 
-BYTES_PER_ALLOC_RECORD = 28   # 20-byte address + 8-byte revenue (§6.4)
+BYTES_PER_ALLOC_RECORD = 28   # 20-byte address + 8-byte revenue (Section 6.4)
 BYTES_PER_TOPO_EVENT = 41     # two 20-byte addresses + 1 type byte
 CHURN_FRACTION = 0.005        # 0.5% of edges change per block
+BYTES_PER_KB = 1000.0         # Match the paper's decimal KB convention
 
 SIZES_B1 = [500, 1000, 2000, 5000, 10000, 22000, 50000]
 BLOCKS_B2 = [1, 10, 50, 100, 500, 1000]
@@ -193,9 +194,10 @@ def _edges_for_ba(num_nodes: int) -> float:
 
 
 def _storage_per_block_kb(num_nodes: int) -> dict:
+    """Return per-block storage in decimal KB, matching Section 6.4 of the paper."""
     ne = _edges_for_ba(num_nodes)
-    alloc = num_nodes * BYTES_PER_ALLOC_RECORD / 1024.0
-    topo = CHURN_FRACTION * ne * BYTES_PER_TOPO_EVENT / 1024.0
+    alloc = num_nodes * BYTES_PER_ALLOC_RECORD / BYTES_PER_KB
+    topo = CHURN_FRACTION * ne * BYTES_PER_TOPO_EVENT / BYTES_PER_KB
     return {"alloc_kb": alloc, "topology_kb_per_block": topo,
             "total_kb_per_block": alloc + topo}
 
@@ -221,10 +223,10 @@ def experiment_b_storage() -> dict:
             cumulative_by_size.append({
                 "num_nodes": num_nodes,
                 "num_blocks": nb,
-                "cumulative_mb": round(total_kb * nb / 1024.0, 6),
+                "cumulative_mb": round(total_kb * nb / 1000.0, 6),
             })
         print(f"      |V|={num_nodes}  per_block={total_kb:.1f} KB  "
-              f"@1000blk={total_kb*1000/1024:.1f} MB", flush=True)
+              f"@1000blk={total_kb*1000/1000:.1f} MB", flush=True)
 
     return {"vs_nodes": vs_nodes, "cumulative": cumulative_by_size}
 
