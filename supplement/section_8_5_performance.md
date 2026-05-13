@@ -69,15 +69,15 @@ approximately 159 s for 2000 transactions and 239 s for 3000
 transactions, leaving ample margin within the ten-minute block interval.
 
 Fig. 6(c) shows the per-block storage overhead versus network size.
-Incentive allocation grows at 28 bytes per node and dominates the total,
-while topology change storage grows much more slowly, reaching about
-41 KB even at |V| = 50 000. The dashed line shows the Section 6.4
-analytical estimate for the incentive allocation field, extrapolated as a
-linear function of |V| with slope 616 KB / 22 000 nodes. Using the same
-decimal-KB convention as Section 6.4, this line coincides with the
-simulated allocation component: at |V| = 22 000, the allocation field is
-616.0 KB, topology changes add 18.0 KB, and the total is 634.0 KB. Thus
-topology churn adds only 2.9% over the allocation-field estimate at the
+Incentive allocation grows at 28 bytes per node and dominates the total.
+Using the same decimal-KB convention as Section 6.4, the simulated
+allocation curve coincides with the Section 6.4 analytical estimate for
+the incentive allocation field. The total storage curve lies slightly
+above this allocation component because it also includes topology change
+events, which grow much more slowly and reach about 41 KB even at
+|V| = 50 000. At |V| = 22 000, the allocation field is 616.0 KB,
+topology changes add 18.0 KB, and the total is 634.0 KB. Thus topology
+churn adds only 2.9% over the allocation-field estimate at the
 Bitcoin-scale reference point.
 
 Fig. 6(d) shows the cumulative ITFC-specific blockchain overhead over
