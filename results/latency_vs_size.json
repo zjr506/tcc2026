@@ -3,126 +3,126 @@
     "topology": "Doar",
     "num_nodes": 500,
     "mean_edges": 1969.3,
-    "alg12_ms": 2.7634,
-    "alg12_se_ms": 0.0334
+    "alg12_ms": 1.5672,
+    "alg12_se_ms": 0.0219
   },
   {
     "topology": "Doar",
     "num_nodes": 1000,
     "mean_edges": 3852.3,
-    "alg12_ms": 5.4638,
-    "alg12_se_ms": 0.022
+    "alg12_ms": 3.1803,
+    "alg12_se_ms": 0.0109
   },
   {
     "topology": "Doar",
     "num_nodes": 2000,
     "mean_edges": 7577.3,
-    "alg12_ms": 10.819,
-    "alg12_se_ms": 0.191
+    "alg12_ms": 6.2519,
+    "alg12_se_ms": 0.0105
   },
   {
     "topology": "Doar",
     "num_nodes": 5000,
     "mean_edges": 18664.3,
-    "alg12_ms": 27.0054,
-    "alg12_se_ms": 0.149
+    "alg12_ms": 15.9216,
+    "alg12_se_ms": 0.1278
   },
   {
     "topology": "Doar",
     "num_nodes": 10000,
     "mean_edges": 37108.7,
-    "alg12_ms": 55.1125,
-    "alg12_se_ms": 1.0134
+    "alg12_ms": 32.3239,
+    "alg12_se_ms": 0.1501
   },
   {
     "topology": "Doar",
     "num_nodes": 20000,
     "mean_edges": 74151.7,
-    "alg12_ms": 110.559,
-    "alg12_se_ms": 0.6973
+    "alg12_ms": 68.3172,
+    "alg12_se_ms": 2.7616
   },
   {
     "topology": "HK",
     "num_nodes": 500,
     "mean_edges": 1982.0,
-    "alg12_ms": 2.6391,
-    "alg12_se_ms": 0.013
+    "alg12_ms": 1.5527,
+    "alg12_se_ms": 0.0171
   },
   {
     "topology": "HK",
     "num_nodes": 1000,
     "mean_edges": 3982.0,
-    "alg12_ms": 5.3187,
-    "alg12_se_ms": 0.0245
+    "alg12_ms": 3.1842,
+    "alg12_se_ms": 0.0622
   },
   {
     "topology": "HK",
     "num_nodes": 2000,
     "mean_edges": 7981.7,
-    "alg12_ms": 10.7751,
-    "alg12_se_ms": 0.0707
+    "alg12_ms": 6.2809,
+    "alg12_se_ms": 0.0644
   },
   {
     "topology": "HK",
     "num_nodes": 5000,
     "mean_edges": 19979.7,
-    "alg12_ms": 27.2735,
-    "alg12_se_ms": 1.0479
+    "alg12_ms": 15.5288,
+    "alg12_se_ms": 0.056
   },
   {
     "topology": "HK",
     "num_nodes": 10000,
     "mean_edges": 39979.7,
-    "alg12_ms": 55.5387,
-    "alg12_se_ms": 0.2484
+    "alg12_ms": 32.335,
+    "alg12_se_ms": 0.1806
   },
   {
     "topology": "HK",
     "num_nodes": 20000,
     "mean_edges": 79978.7,
-    "alg12_ms": 112.4881,
-    "alg12_se_ms": 1.4179
+    "alg12_ms": 76.5099,
+    "alg12_se_ms": 4.6306
   },
   {
     "topology": "WS",
     "num_nodes": 500,
     "mean_edges": 2000.0,
-    "alg12_ms": 2.8845,
-    "alg12_se_ms": 0.0184
+    "alg12_ms": 2.0863,
+    "alg12_se_ms": 0.0525
   },
   {
     "topology": "WS",
     "num_nodes": 1000,
     "mean_edges": 4000.0,
-    "alg12_ms": 5.7806,
-    "alg12_se_ms": 0.0653
+    "alg12_ms": 4.2737,
+    "alg12_se_ms": 0.1599
   },
   {
     "topology": "WS",
     "num_nodes": 2000,
     "mean_edges": 8000.0,
-    "alg12_ms": 11.774,
-    "alg12_se_ms": 0.146
+    "alg12_ms": 8.6377,
+    "alg12_se_ms": 0.0749
   },
   {
     "topology": "WS",
     "num_nodes": 5000,
     "mean_edges": 20000.0,
-    "alg12_ms": 30.1793,
-    "alg12_se_ms": 0.5495
+    "alg12_ms": 22.2688,
+    "alg12_se_ms": 0.8024
   },
   {
     "topology": "WS",
     "num_nodes": 10000,
     "mean_edges": 40000.0,
-    "alg12_ms": 57.9889,
-    "alg12_se_ms": 0.1454
+    "alg12_ms": 43.704,
+    "alg12_se_ms": 0.9654
   },
   {
     "topology": "WS",
     "num_nodes": 20000,
     "mean_edges": 80000.0,
-    "alg12_ms": 120.6883,
-    "alg12_se_ms": 1.5642
+    "alg12_ms": 90.441,
+    "alg12_se_ms": 0.6793
   }
 ]
