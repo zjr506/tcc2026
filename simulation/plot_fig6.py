@@ -144,7 +144,7 @@ def _plot_subfig_c(ax: plt.Axes, storage: dict) -> None:
     slope_est = PAPER_ESTIMATE_KB / PAPER_ESTIMATE_V
     ax.plot(x_est, slope_est * x_est, linestyle="--", linewidth=1.4,
             color="#2ca02c",
-            label=f"Section 6.4 allocation estimate ({PAPER_ESTIMATE_KB:.0f} KB at |V|={PAPER_ESTIMATE_V:,})")
+            label="Sec. 6.4 estimate")
 
     ax.set_xlabel(r"Network size $|V|$")
     ax.set_ylabel("Storage per block (KB)")
